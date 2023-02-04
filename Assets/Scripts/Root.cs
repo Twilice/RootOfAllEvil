@@ -24,7 +24,8 @@ public class Root : MonoBehaviour
     [Header("prefab object references")]
     public Transform subRootSpawnPoint;
     public Transform body;
-
+    public Renderer meshRenderer;
+    
     [Header("game states")]
     public bool IsCutOff;
 
@@ -151,9 +152,19 @@ public class Root : MonoBehaviour
         }
         
         transform.SetParent(GameCoordinator.Instance.transform);
-        Destroy(this.gameObject, deathTime*depth);
+        StartCoroutine(Die(deathTime * depth));
     }
 
+    private IEnumerator Die(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        var posx = UnityEngine.Random.Range(-meshRenderer.bounds.extents.x, meshRenderer.bounds.extents.x);
+        var posy = UnityEngine.Random.Range(-meshRenderer.bounds.extents.y, meshRenderer.bounds.extents.y);
+        var posz = UnityEngine.Random.Range(-meshRenderer.bounds.extents.z, meshRenderer.bounds.extents.z);
+        var pos = new Vector3(posx, posy, posz) + meshRenderer.bounds.center;
+        Instantiate(GameCoordinator.Instance.assetReferenceContainer.experiencePickupPrefab, pos, Quaternion.identity);
+        Destroy(this.gameObject);
+    }
     public void TakeDamage(int damage)
     {
         HP = -damage;

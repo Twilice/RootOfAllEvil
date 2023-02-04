@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: AssetReferenceContainer
   m_EditorClassIdentifier: 
   rootPrefab: {fileID: 1604689909802464744, guid: e3ee5707f037feb489f6d8b124ddd0ec, type: 3}
+  experiencePickupPrefab: {fileID: 166206033202613164, guid: 4f3c5fc8dda8657458860c5e529dcd3e, type: 3}
+  GardenerPrefab: {fileID: 1096199111, guid: 5827e9d49051a9b45a6423d0780fe492, type: 3}

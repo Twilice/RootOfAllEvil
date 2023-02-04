@@ -46,9 +46,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialRoots: 5
-  baseSpawnWeight: 10
-  spawnWeightPerSize: 5
-  bonusSpawnWeightPerSecond: 20
+  baseSpawnWeight: 3
+  spawnWeightPerSize: 0
+  bonusSpawnWeightPerSecond: 11.7
   bonusSpawnWeightPerSpawn: -5
   maxSpawnWeightRoll: 100
   currentBonusSpawnWeight: 0

@@ -10,6 +10,8 @@ public class GameCoordinator : MonoBehaviour
 
     public AssetReferenceContainer assetReferenceContainer;
 
+    public GardenerController gardenerInstance;
+    
     [RuntimeInitializeOnLoadMethod]
     public static void Construct()
     {
@@ -27,6 +29,8 @@ public class GameCoordinator : MonoBehaviour
         if (assetReferenceContainer == null)
             throw new System.NullReferenceException($"{nameof(GameCoordinator)} {transform.name} - scriptableObject type {nameof(AssetReferenceContainer)} with name {assetReferenceContainer} is missing.");
         assetReferenceContainer = Instantiate(assetReferenceContainer); // don't change the asset file object.
+
+        gardenerInstance = Instantiate(assetReferenceContainer.GardenerPrefab);
     }
   
 }
