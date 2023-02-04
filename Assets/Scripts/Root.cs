@@ -16,6 +16,7 @@ public class Root : MonoBehaviour
     public float spawnAngle = 70;
     public float timeToGrowSeconds = 3;
     public AnimationCurve growSpeedCurve;
+    public float deathTime = 0.4f;
 
     [Header("prefab object references")]
     public Transform subRootSpawnPoint;
@@ -39,7 +40,7 @@ public class Root : MonoBehaviour
         get { return _hp; }
         set { _hp += value;
             if (_hp <= 0) {
-                OnCut();
+                OnCut(0);
             }
         }
     }
@@ -88,6 +89,7 @@ public class Root : MonoBehaviour
     {
         var newRootRotation = transform.rotation * Quaternion.AngleAxis(UnityEngine.Random.Range(-spawnAngle, spawnAngle), Vector3.up);
         var newRoot = Instantiate(Assets.rootPrefab, subRootSpawnPoint.position, newRootRotation, transform);
+        newRoot.parentRoot = this;
         subRoots.Add(newRoot);
     }
 
@@ -96,15 +98,22 @@ public class Root : MonoBehaviour
         throw new NotImplementedException();
     }
 
-    private IEnumerator OnCut()
+    void ChildBranchCut(Root root)
     {
-        yield return new WaitForSeconds(0.4f);
-        foreach (var child in subRoots)
-        {
-            
-        }
-        Destroy(this.gameObject);
+        subRoots.Remove(root);
         
+    }
+    
+    private void OnCut(int depth)
+    {
+        var subRootsCopy = subRoots.ToList();
+        foreach (var child in subRootsCopy)
+        {
+            child.OnCut(depth + 1);
+        }
+
+        transform.SetParent(GameCoordinator.Instance.transform);
+        Destroy(this.gameObject, deathTime*depth);
     }
 
     public void TakeDamage(int damage)

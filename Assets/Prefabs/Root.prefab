@@ -78,7 +78,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizeScaleMultiplier: 0.2
   spawnAngle: 70
-  timeToGrowSeconds: 3
+  timeToGrowSeconds: 0.3
   growSpeedCurve:
     serializedVersion: 2
     m_Curve:
