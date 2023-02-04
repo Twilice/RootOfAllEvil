@@ -55,12 +55,24 @@
         updateBannerVisibility();
       }
 
-      var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/Buildsloader.js";
+      // var buildUrl = "Build";
+      // var loaderUrl = buildUrl + "/Buildsloader.js";
+      // var config = {
+      //   dataUrl: buildUrl + "/Buildsdata.gz",
+      //   frameworkUrl: buildUrl + "/Buildsframework.js.gz",
+      //   codeUrl: buildUrl + "/Buildswasm.gz",
+      //   streamingAssetsUrl: "StreamingAssets",
+      //   companyName: "DefaultCompany",
+      //   productName: "RootOfAllEvil",
+      //   productVersion: "0.1",
+      //   showBanner: unityShowBanner,
+      // };
+
+      var loaderUrl = "Buildsloader.js";
       var config = {
-        dataUrl: buildUrl + "/Buildsdata.gz",
-        frameworkUrl: buildUrl + "/Buildsframework.js.gz",
-        codeUrl: buildUrl + "/Buildswasm.gz",
+        dataUrl: "Buildsdata.gz",
+        frameworkUrl: "Buildsframework.js.gz",
+        codeUrl: "Buildswasm.gz",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "RootOfAllEvil",
