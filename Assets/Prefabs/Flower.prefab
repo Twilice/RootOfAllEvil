@@ -778,6 +778,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6036937060247581515}
+  - component: {fileID: 9148071866732791321}
   m_Layer: 0
   m_Name: Flower
   m_TagString: Untagged
@@ -801,3 +802,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9148071866732791321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9082092065101458927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 568fa41d612ea0c4ebe07c8de79b186e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spore: {fileID: 1665068882250651788, guid: 4650d57eb5d2b294eb66b0e4387adfed, type: 3}
+  numberOfSpores: 5
+  interval: 1
+  spread: 360
+  speed: 10
+  duration: 2

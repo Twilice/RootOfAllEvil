@@ -119,6 +119,7 @@ MonoBehaviour:
   hitEffect: {fileID: 3462913983932774998}
   parentRoot: {fileID: 0}
   subRoots: []
+  flower: {fileID: 9148071866732791321, guid: 1d058804a981229428059ad6dac2684f, type: 3}
 --- !u!1 &4418541997864101056
 GameObject:
   m_ObjectHideFlags: 0

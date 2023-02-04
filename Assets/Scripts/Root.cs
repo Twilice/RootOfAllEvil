@@ -40,6 +40,9 @@ public class Root : MonoBehaviour
     [Header("runtime object references")]
     public Root parentRoot;
     public List<Root> subRoots = new List<Root>();
+
+    [Header("Hazards")]
+    public Flower flower;
     
     private Vector3 startScale;
     private float timeUntilGrown;
@@ -97,7 +100,12 @@ public class Root : MonoBehaviour
         consumeGrowth &= subRoots.Count <= UnityEngine.Random.Range(0, maxBranches);
         consumeGrowth &= subRootSpawnPoints.Count > 0;
 
-        if (consumeGrowth)
+        if (consumeGrowth && UnityEngine.Random.value < 0.25f)
+        {
+            var newFlower = Instantiate(flower);
+            newFlower.transform.position = transform.position;
+        }
+        else if (consumeGrowth)
         {
             CreateNewRoot();
         }
