@@ -29,7 +29,10 @@ public class GameCoordinator : MonoBehaviour
         assetReferenceContainer = Instantiate(assetReferenceContainer); // don't change the asset file object.
 
         Debug.Log("Test spawn a root");
-        Instantiate(assetReferenceContainer.rootPrefab);
+        Instantiate(assetReferenceContainer.rootPrefab, new Vector3(1, 0, 0), Quaternion.AngleAxis(0, Vector3.up));
+        Instantiate(assetReferenceContainer.rootPrefab, new Vector3(1, 0, 0), Quaternion.AngleAxis(90, Vector3.up));
+        Instantiate(assetReferenceContainer.rootPrefab, new Vector3(1, 0, 0), Quaternion.AngleAxis(180, Vector3.up));
+        Instantiate(assetReferenceContainer.rootPrefab, new Vector3(1, 0, 0), Quaternion.AngleAxis(270, Vector3.up));
     }
   
 }
