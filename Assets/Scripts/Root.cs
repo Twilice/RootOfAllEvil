@@ -25,7 +25,8 @@ public class Root : MonoBehaviour
     public List<Transform> subRootSpawnPoints;
     public Transform body;
     public Renderer meshRenderer;
-    
+    public List<Transform> particlesToMakeStandaloneOnDestroy;
+
     [Header("game states")]
     public bool IsCutOff;
 
@@ -182,6 +183,13 @@ public class Root : MonoBehaviour
         var posz = UnityEngine.Random.Range(-meshRenderer.bounds.extents.z, meshRenderer.bounds.extents.z);
         var pos = new Vector3(posx, posy, posz) + meshRenderer.bounds.center;
         Instantiate(GameCoordinator.Instance.assetReferenceContainer.experiencePickupPrefab, pos, Quaternion.identity);
+
+        foreach (var particleSystem in particlesToMakeStandaloneOnDestroy)
+        {
+            particleSystem.parent = null;
+            particleSystem.GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        }
+
         Destroy(this.gameObject);
     }
     public void TakeDamage(int damage)
