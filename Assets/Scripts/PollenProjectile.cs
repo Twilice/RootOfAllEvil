@@ -7,6 +7,7 @@ public class PollenProjectile : MonoBehaviour
     public Vector3 m_direction;
     public float m_speed;
     public float m_duration;
+    public SphereCollider collider;
 
     private float startTime;
 
@@ -26,6 +27,22 @@ public class PollenProjectile : MonoBehaviour
     void Update()
     {
         transform.position += m_direction * m_speed * Time.deltaTime;
+
+        Collider[] colliders = Physics.OverlapSphere(collider.bounds.center, collider.bounds.extents.magnitude);
+
+        // Check if there are any colliders within the given collider
+        if (colliders.Length > 0)
+        {
+            foreach (var c in colliders)
+            {
+                if (c.gameObject.tag == "Player")
+                {
+                    Debug.Log("Take Damage!!!");
+                    Destroy(gameObject);
+                }
+            }
+        }
+
         if (Time.time - startTime >= m_duration)
         {
             Destroy(gameObject);
