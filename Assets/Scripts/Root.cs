@@ -172,7 +172,6 @@ public class Root : MonoBehaviour
     {
         audioSource.clip = takingDamageClip;
         startScale = body.localScale;
-        startScale = body.localScale/* * UnityEngine.Random.Range(0.8f, 1.1f)*/;
         timeUntilGrown = timeToGrowSeconds;
         StartCoroutine(StartGrowCoroutine());
     }
