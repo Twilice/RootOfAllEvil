@@ -1,23 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class GameCoordinator : MonoBehaviour
 {
-    private GameCoordinator _instance;
-    public GameCoordinator Instance => _instance;
+    private static GameCoordinator _instance;
+    public static GameCoordinator Instance => _instance;
+
     public AssetReferenceContainer assetReferenceContainer;
 
-    void Awake()
+    [RuntimeInitializeOnLoadMethod]
+    public static void Construct()
     {
-        if (_instance != null && _instance != this)
+        if (_instance == null)
         {
-            Destroy(this.gameObject);
+            _instance = new GameObject("GameCoordinator").AddComponent<GameCoordinator>();
         }
-        else
-        {
-            _instance = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
+        _instance.Init();
     }
+
+    private void Init()
+    {
+        DontDestroyOnLoad(this.gameObject);
+        assetReferenceContainer = Resources.Load<AssetReferenceContainer>(nameof(AssetReferenceContainer));
+        if (assetReferenceContainer == null)
+            throw new System.NullReferenceException($"{nameof(GameCoordinator)} {transform.name} - scriptableObject type {nameof(AssetReferenceContainer)} with name {assetReferenceContainer} is missing.");
+        assetReferenceContainer = Instantiate(assetReferenceContainer); // don't change the asset file object.
+    }
+  
 }
