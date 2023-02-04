@@ -37,6 +37,12 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# Rider related .gitignores
+.idea/.idea.RootOfAllEvil/.idea/projectSettingsUpdater.xml
+.idea/.idea.RootOfAllEvil/.idea/workspace.xml
+Assets/Scripts/.idea/.idea.Scripts.dir/.idea/projectSettingsUpdater.xml
+Assets/Scripts/.idea/.idea.Scripts.dir/.idea/workspace.xml
 Assets/Scripts/.idea/.idea.Scripts.dir/.idea/indexLayout.xml
 Assets/Scripts/.idea/.idea.Scripts.dir/.idea/vcs.xml
 .idea/.idea.RootOfAllEvil/.idea/vcs.xml
