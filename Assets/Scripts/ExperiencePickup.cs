@@ -10,7 +10,7 @@ public class ExperiencePickup : MonoBehaviour
 
        public bool startedFollowing;
        
-       public void OnTriggerStay(Collider other)
+       public void OnTriggerEnter(Collider other)
        {
               if (other.tag != "Player")
               {
