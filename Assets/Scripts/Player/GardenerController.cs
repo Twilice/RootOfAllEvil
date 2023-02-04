@@ -17,6 +17,10 @@ public class GardenerController : MonoBehaviour
     public SphereCollider m_hitCollider;
     public int m_damage = 3;
 
+    [Header("Animations")]
+    public Animator runAnimator;
+    public Animator swingAnimator;
+
     [Header("Effects")]
     public Transform m_cameraTransform;
 
@@ -65,11 +69,14 @@ public class GardenerController : MonoBehaviour
     }
 
     // Update is called once per frame
+    private bool workaroundAttackCooldown = true;
     void Update()
     {
         //Movement
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
+
+        runAnimator.SetBool("isRunning", (horizontal != 0 || vertical != 0));
 
         transform.position = transform.position + new Vector3(horizontal, 0, vertical) * m_moveSpeed * Time.deltaTime;
 
@@ -81,12 +88,17 @@ public class GardenerController : MonoBehaviour
 
 
         // Swing
-        if (m_axePivot.localRotation == originalRotation && Input.GetKeyDown(KeyCode.Mouse0))
+        if (m_axePivot.localRotation == originalRotation)
+        {
+            workaroundAttackCooldown = true;
+        }
+        if (workaroundAttackCooldown && Input.GetKeyDown(KeyCode.Mouse0))
         {
             rotateBack = false;
             PlaySoundClip();
             StartCoroutine(SmoothRotate(m_rotationAngle));
             CheckForRoots();
+            workaroundAttackCooldown = false;
         }
     }
 

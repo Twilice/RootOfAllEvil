@@ -43,7 +43,7 @@ public class Flower : MonoBehaviour
                 float angle = i * (spread / numberOfSpores) - spread / 2;
                 Vector3 direction = Quaternion.Euler(0, angle, 0) * transform.forward;
                 var projectile = Instantiate(spore);
-                spore.SetUp(transform.position, direction, speed, duration);
+                projectile.SetUp(transform.position, direction, speed, duration);
             }
         }
     }
