@@ -12,6 +12,7 @@ public class Root : MonoBehaviour
     public static Root baseRoot;
 
     [Header("stat data")]
+    public float sizeScaleMultiplier = 0.5f;
     public float spawnAngle = 70;
 
     [Header("prefab object references")]
@@ -26,8 +27,9 @@ public class Root : MonoBehaviour
     [Header("runtime object references")]
     public Root parentRoot;
     public List<Root> subRoots = new List<Root>();
-    
 
+    private Vector3 startScale;
+    
     // length of longest subroot
     public int Length => throw new NotImplementedException();
 
@@ -88,13 +90,14 @@ public class Root : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        startScale = body.localScale;
     }
 
     // Update is called once per frame
     void Update()
     {
-        body.localScale = new Vector3(Mathf.Sqrt(TotalLength)+1, 1, Mathf.Sqrt(TotalLength) + 1);
+        float scale = sizeScaleMultiplier * Mathf.Sqrt(TotalLength);
+        body.localScale = new Vector3(scale + startScale.x, startScale.y, scale + + startScale.z);
         // debug test :: only
         if (Input.GetKeyDown(KeyCode.Space))
         {
