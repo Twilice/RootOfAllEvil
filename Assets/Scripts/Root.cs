@@ -100,10 +100,12 @@ public class Root : MonoBehaviour
         consumeGrowth &= subRoots.Count <= UnityEngine.Random.Range(0, maxBranches);
         consumeGrowth &= subRootSpawnPoints.Count > 0;
 
-        if (consumeGrowth && UnityEngine.Random.value < 0.25f)
+        if (consumeGrowth && UnityEngine.Random.value < 0.05f)
         {
             var newFlower = Instantiate(flower);
             newFlower.transform.position = transform.position;
+            float randRotation = UnityEngine.Random.Range(0f, 360f);
+            newFlower.transform.rotation = Quaternion.Euler(0, randRotation, 0f);
         }
         else if (consumeGrowth)
         {
