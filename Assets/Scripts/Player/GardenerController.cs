@@ -16,10 +16,19 @@ public class GardenerController : MonoBehaviour
     public Transform m_axePivot;
     public SphereCollider m_hitCollider;
     public int m_damage = 3;
-    
+
+    [Header("Effects")]
+    public Transform m_cameraTransform;
+
+    [Header("Sounds")]
+    public AudioSource m_audioSource;
+    public AudioClip m_swooshSoundClip;
+
     // Privates
     private Quaternion originalRotation;
     private bool rotateBack = false;
+
+    private Vector3 originalScreenPos;
 
 
     // Start is called before the first frame update
@@ -27,6 +36,7 @@ public class GardenerController : MonoBehaviour
     {
         m_axePivot.localEulerAngles = new Vector3(0f, -(m_rotationAngle / 2f), 0f);
         originalRotation = m_axePivot.rotation;
+        m_audioSource.clip = m_swooshSoundClip;
     }
 
     // Update is called once per frame
@@ -49,6 +59,7 @@ public class GardenerController : MonoBehaviour
         if (m_axePivot.localRotation == originalRotation && Input.GetKeyDown(KeyCode.Mouse0))
         {
             rotateBack = false;
+            PlaySoundClip();
             StartCoroutine(SmoothRotate(m_rotationAngle));
             CheckForRoots();
         }
@@ -94,9 +105,37 @@ public class GardenerController : MonoBehaviour
                 {
                     var root = collider.GetComponentInParent<Root>();
                     root.TakeDamage(m_damage);
+                    float duration = m_swingSpeed * 0.8f;
+                    StartCoroutine(ScreenShake(duration, 0.15f));
                     Debug.Log(root.HP.ToString()+" HP left!");
                 }
             }
         }
+    }
+
+    public IEnumerator ScreenShake(float duration, float magnitude)
+    {
+        originalScreenPos = m_cameraTransform.localPosition;
+
+        float elapsed = 0.0f;
+
+        while (elapsed < duration)
+        {
+            float x = Random.Range(-1f, 1f) * magnitude;
+            float y = Random.Range(-1f, 1f) * magnitude;
+
+            m_cameraTransform.localPosition = new Vector3(originalScreenPos.x + x, originalScreenPos.y + y, originalScreenPos.z);
+
+            elapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        m_cameraTransform.localPosition = originalScreenPos;
+    }
+
+    public void PlaySoundClip()
+    {
+        m_audioSource.Play();
     }
 }
