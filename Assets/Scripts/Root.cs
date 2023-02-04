@@ -88,6 +88,7 @@ public class Root : MonoBehaviour
         bool consumeGrowth = true;
 
         consumeGrowth &= subRoots.Count <= UnityEngine.Random.Range(0, maxBranches);
+        consumeGrowth &= subRootSpawnPoints.Count > 0;
 
         if (consumeGrowth)
         {
@@ -165,7 +166,7 @@ public class Root : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        startScale = body.localScale/* * UnityEngine.Random.Range(0.8f, 1.1f)*/;
+        startScale = body.localScale * UnityEngine.Random.Range(0.8f, 1.1f);
         timeUntilGrown = timeToGrowSeconds;
         StartCoroutine(StartGrowCoroutine());
     }
