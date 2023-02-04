@@ -8,4 +8,5 @@ public class AssetReferenceContainer : ScriptableObject
     public Root rootPrefab;
     public ExperiencePickup experiencePickupPrefab;
     public GardenerController GardenerPrefab;
+    public CameraFollow FollowCamera;
 }

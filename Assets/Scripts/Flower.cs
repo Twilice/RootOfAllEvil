@@ -13,6 +13,20 @@ public class Flower : MonoBehaviour
 
     private float timer;
 
+    private int _hp = 1;
+    public int HP
+    {
+        get { return _hp; }
+        set
+        {
+            _hp = value;
+            if (_hp < 0)
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
+
     void Start()
     {
         timer = interval;
