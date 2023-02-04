@@ -7,6 +7,7 @@ public class GardenerController : MonoBehaviour
     // Publics
     public Transform m_body;
     public float m_moveSpeed = 10f;
+    public float m_sensitivity = 10f;
     public float m_swingSpeed = 0.25f;
     public float m_rotationAngle = 90f;
     public Transform m_axePivot;
@@ -33,15 +34,10 @@ public class GardenerController : MonoBehaviour
         transform.position = transform.position + new Vector3(horizontal, 0, vertical) * m_moveSpeed * Time.deltaTime;
 
         //Rotation
-        Vector3 mousePosition = Input.mousePosition;
-        Vector3 viewportPoint = Camera.main.ScreenToViewportPoint(mousePosition);
-        Vector3 target = Camera.main.ViewportToWorldPoint(new Vector3(viewportPoint.x, viewportPoint.y, m_body.position.z - Camera.main.transform.position.z));
-        m_body.LookAt(target, Vector3.up);
-        //Vector2 positionOnScreen = Camera.main.WorldToViewportPoint(m_body.position);
-        //Vector2 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
-        //float angle = AngleBetweenTwoPoints(positionOnScreen, mouseOnScreen) ;
-
-        //m_body.rotation = Quaternion.Euler(new Vector3(0f, -angle, 0f));
+        Vector3 mousePos = Input.mousePosition;
+        Vector3 screenPoint = Camera.main.ScreenToViewportPoint(mousePos);
+        Quaternion targetRotation = Quaternion.LookRotation(new Vector3(screenPoint.x - 0.5f, 0f, screenPoint.y - 0.5f));
+        m_body.rotation = Quaternion.Slerp(m_body.rotation, targetRotation, m_sensitivity * Time.deltaTime);
 
 
         // Swing
@@ -76,10 +72,5 @@ public class GardenerController : MonoBehaviour
         {
             m_axePivot.localRotation = originalRotation;
         }
-    }
-
-    float AngleBetweenTwoPoints(Vector3 a, Vector3 b)
-    {
-        return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
     }
 }
