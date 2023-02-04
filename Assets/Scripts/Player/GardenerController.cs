@@ -31,6 +31,26 @@ public class GardenerController : MonoBehaviour
     private Vector3 originalScreenPos;
 
 
+    private int _hp = 100;
+    public int HP
+    {
+        get { return _hp; }
+        set
+        {
+            int oldHP = _hp;
+            _hp = value < 100 ? value : 100;
+            if (_hp < 0)
+            {
+                Destroy(gameObject);
+            }
+
+            if (_hp < oldHP)
+            {
+                // OnDamgeTaken
+            }
+        }
+    }
+
     public void AddExperience(int amount)
     {
         

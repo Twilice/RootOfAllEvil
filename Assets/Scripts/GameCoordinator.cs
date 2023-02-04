@@ -11,6 +11,7 @@ public class GameCoordinator : MonoBehaviour
     public AssetReferenceContainer assetReferenceContainer;
 
     public GardenerController gardenerInstance;
+    public CameraFollow followCamInstance;
     
     [RuntimeInitializeOnLoadMethod]
     public static void Construct()
@@ -31,6 +32,7 @@ public class GameCoordinator : MonoBehaviour
         assetReferenceContainer = Instantiate(assetReferenceContainer); // don't change the asset file object.
 
         gardenerInstance = Instantiate(assetReferenceContainer.GardenerPrefab);
+        followCamInstance = Instantiate(assetReferenceContainer.FollowCamera);
     }
   
 }

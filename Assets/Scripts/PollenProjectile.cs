@@ -37,7 +37,7 @@ public class PollenProjectile : MonoBehaviour
             {
                 if (c.gameObject.tag == "Player")
                 {
-                    Debug.Log("Take Damage!!!");
+                    c.GetComponentInParent<GardenerController>().HP -= 1;
                     Destroy(gameObject);
                 }
             }
