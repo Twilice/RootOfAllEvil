@@ -22,6 +22,11 @@ public class GardenerController : MonoBehaviour
     private bool rotateBack = false;
 
 
+    public void AddExperience(int amount)
+    {
+        
+    }
+    
     // Start is called before the first frame update
     void Start()
     {
