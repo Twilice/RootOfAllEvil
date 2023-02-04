@@ -40,6 +40,9 @@ public class Root : MonoBehaviour
     [Header("runtime object references")]
     public Root parentRoot;
     public List<Root> subRoots = new List<Root>();
+
+    [Header("Hazards")]
+    public Flower flower;
     
     private Vector3 startScale;
     private float timeUntilGrown;
@@ -97,7 +100,14 @@ public class Root : MonoBehaviour
         consumeGrowth &= subRoots.Count <= UnityEngine.Random.Range(0, maxBranches);
         consumeGrowth &= subRootSpawnPoints.Count > 0;
 
-        if (consumeGrowth)
+        if (consumeGrowth && UnityEngine.Random.value < 0.05f)
+        {
+            var newFlower = Instantiate(flower);
+            newFlower.transform.position = transform.position;
+            float randRotation = UnityEngine.Random.Range(0f, 360f);
+            newFlower.transform.rotation = Quaternion.Euler(0, randRotation, 0f);
+        }
+        else if (consumeGrowth)
         {
             CreateNewRoot();
         }
@@ -231,9 +241,24 @@ public class Root : MonoBehaviour
         startScale = body.localScale * UnityEngine.Random.Range(0.8f, 1.1f);
         timeUntilGrown = timeToGrowSeconds;
         StartCoroutine(StartGrowCoroutine());
+        InvokeRepeating(nameof(RefreshRotationMovement), 1f, 2f);
     }
 
     // Update is called once per frame
+    private float slowRotationDisplacement;
+    void RefreshRotationMovement()
+    {
+        slowRotationDisplacement = UnityEngine.Random.Range(-0.35f, 0.35f);
+        if (TotalLength == 0)
+        {
+            slowRotationDisplacement *= 4;
+        }
+        else if (TotalLength == 1)
+        {
+            slowRotationDisplacement *= 2;
+        }
+    }
+
     void Update()
     {
         // debug test :: only
@@ -244,6 +269,12 @@ public class Root : MonoBehaviour
             {
                 CreateNewRoot();
             }
+        }
+
+        if (isDisplacing == false)
+        {
+            // use coroutine to move a longer distance before trying to change direction
+            transform.rotation = transform.rotation * Quaternion.AngleAxis(slowRotationDisplacement * Time.deltaTime, Vector3.up);
         }
     }
     
