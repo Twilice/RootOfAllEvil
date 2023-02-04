@@ -13,6 +13,7 @@ public class Root : MonoBehaviour
 
     [Header("stat data")]
     public float sizeScaleMultiplier = 0.5f;
+    public float spawnAngle = 70;
 
     [Header("prefab object references")]
     public Transform subRootSpawnPoint;
@@ -70,7 +71,7 @@ public class Root : MonoBehaviour
 
     public void CreateNewRoot()
     {
-        var newRootRotation = transform.rotation * Quaternion.Euler(0, UnityEngine.Random.Range(-70, 70), 0);
+        var newRootRotation = transform.rotation * Quaternion.AngleAxis(UnityEngine.Random.Range(-spawnAngle, spawnAngle), Vector3.up);
         var newRoot = Instantiate(Assets.rootPrefab, subRootSpawnPoint.position, newRootRotation, transform);
         subRoots.Add(newRoot);
     }
