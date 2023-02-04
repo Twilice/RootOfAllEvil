@@ -28,6 +28,10 @@ public class Root : MonoBehaviour
     [Header("game states")]
     public bool IsCutOff;
 
+    [Header("Sounds")]
+    public AudioSource audioSource;
+    public AudioClip takingDamageClip;
+
 
     // runtime game object references
     [Header("runtime object references")]
@@ -156,6 +160,7 @@ public class Root : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        audioSource.Play();
         HP = -damage;
     }
 
@@ -163,6 +168,7 @@ public class Root : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        audioSource.clip = takingDamageClip;
         startScale = body.localScale;
         timeUntilGrown = timeToGrowSeconds;
         StartCoroutine(StartGrowCoroutine());
