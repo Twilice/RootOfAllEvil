@@ -52,7 +52,7 @@ public class BaseRoot : MonoBehaviour
     void Start()
     {
         CreateInitialRoots();
-        InvokeRepeating("TimerTick", tickDelay, tickRate);
+        InvokeRepeating(nameof(TimerTick), tickDelay, tickRate);
     }
 
     void TimerTick()
