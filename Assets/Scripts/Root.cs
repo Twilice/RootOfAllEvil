@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+
 using UnityEngine;
 
 public class Root : MonoBehaviour
@@ -12,8 +14,8 @@ public class Root : MonoBehaviour
     [Header("stat data")]
 
     [Header("prefab object references")]
-    public Transform SubRootSpawnPoint;
-
+    public Transform subRootSpawnPoint;
+    public Transform body;
 
     [Header("game states")]
     public bool IsCutOff;
@@ -26,9 +28,38 @@ public class Root : MonoBehaviour
     
 
     // length of longest subroot
-    public int Length => throw new NotImplementedException(); 
+    public int Length => throw new NotImplementedException();
+
+    public int CalculateLongestLength()
+    {
+        throw new NotImplementedException();
+        //if (subRoots.Count == 0)
+        //    return 0;
+
+        //int depthLength = 0;
+        //foreach (var subRoot in subRoots)
+        //{
+        //    depthLength += subRoot.CalculateLongestLength();
+        //}
+
+        //return depthLength;
+    }
+
+    public int CalculateTotalLength()
+    {
+        if (subRoots.Count == 0)
+            return 0;
+
+        int depthLength = 0;
+        foreach(var subRoot in subRoots)
+        {
+            depthLength += subRoot.CalculateTotalLength() + 1;
+        }
+
+        return depthLength;
+    }
     // summed length of all subroots
-    public int TotalLength => throw new NotImplementedException();
+    public int TotalLength => CalculateTotalLength();
 
     public void Grow()
     {
@@ -37,8 +68,9 @@ public class Root : MonoBehaviour
 
     public void CreateNewRoot()
     {
-        var newRootRotation = SubRootSpawnPoint.rotation * Quaternion.AngleAxis(UnityEngine.Random.Range(-90, 90), Vector3.forward);
-        var newRoot = Instantiate(Assets.rootPrefab, SubRootSpawnPoint.position, newRootRotation, transform);
+        var newRootRotation = subRootSpawnPoint.localRotation * Quaternion.AngleAxis(UnityEngine.Random.Range(-90, 90), Vector3.up);
+        //var newRootRotation = SubRootSpawnPoint.rotation * Quaternion.AngleAxis(90, Vector3.up);
+        var newRoot = Instantiate(Assets.rootPrefab, subRootSpawnPoint.position, newRootRotation, transform);
         subRoots.Add(newRoot);
     }
 
@@ -62,9 +94,16 @@ public class Root : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+
+        body.localScale = new Vector3(Mathf.Sqrt(TotalLength)+1, 1, Mathf.Sqrt(TotalLength) + 1);
+        // debug test :: only
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            CreateNewRoot();
+            if (UnityEngine.Random.Range(0, 3) >= subRoots.Count)
+            {
+                CreateNewRoot();
+            }
         }
     }
 }

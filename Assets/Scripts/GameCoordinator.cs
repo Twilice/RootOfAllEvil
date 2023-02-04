@@ -28,6 +28,7 @@ public class GameCoordinator : MonoBehaviour
             throw new System.NullReferenceException($"{nameof(GameCoordinator)} {transform.name} - scriptableObject type {nameof(AssetReferenceContainer)} with name {assetReferenceContainer} is missing.");
         assetReferenceContainer = Instantiate(assetReferenceContainer); // don't change the asset file object.
 
+        Debug.Log("Test spawn a root");
         Instantiate(assetReferenceContainer.rootPrefab);
     }
   
