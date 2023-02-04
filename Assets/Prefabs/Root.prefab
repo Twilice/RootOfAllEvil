@@ -112,6 +112,7 @@ MonoBehaviour:
   - {fileID: 597649597879526414}
   - {fileID: 1412676985992588014}
   body: {fileID: 8733047542251153441}
+  meshRenderer: {fileID: 8779673112865807644}
   IsCutOff: 0
   audioSource: {fileID: 3010638718760570689}
   takingDamageClip: {fileID: 8300000, guid: c16ed28efa6df314bb59e98fbeb930ff, type: 3}
