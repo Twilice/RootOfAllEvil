@@ -88,18 +88,20 @@ public class GardenerController : MonoBehaviour
 
 
         // Swing
-        if (m_axePivot.localRotation == originalRotation)
-        {
-            workaroundAttackCooldown = true;
-        }
         if (workaroundAttackCooldown && Input.GetKeyDown(KeyCode.Mouse0))
         {
             rotateBack = false;
             PlaySoundClip();
-            StartCoroutine(SmoothRotate(m_rotationAngle));
+            //StartCoroutine(SmoothRotate(m_rotationAngle));
+            swingAnimator.SetTrigger("Swing");
             CheckForRoots();
             workaroundAttackCooldown = false;
         }
+    }
+
+    public void SetSwingCooldown()
+    {
+        workaroundAttackCooldown = true;
     }
 
     IEnumerator SmoothRotate(float angle)
