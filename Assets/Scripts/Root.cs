@@ -179,8 +179,39 @@ public class Root : MonoBehaviour
         audioSource.Play();
         hitEffect.Play();
         HP = -damage;
+        DisplaceRoots(damage);
     }
 
+    private bool isDisplacing = false;
+    public void DisplaceRoots(int damage)
+    {
+        if (isDisplacing) return;
+        
+        isDisplacing = true;
+        var originalRotation = transform.rotation;
+        var newRotation = transform.rotation * Quaternion.AngleAxis(40, Vector3.up);
+
+        StartCoroutine(_DisplaceOverTime(0.10f, newRotation, 
+            () => StartCoroutine(_DisplaceOverTime(0.85f, originalRotation, () => isDisplacing = false))));
+    }
+
+    // todo :: would be cool if effect is stackable
+    IEnumerator _DisplaceOverTime(float duration, Quaternion newRotation, Action onComplete = null)
+    {
+        var timeElapsed = -Time.deltaTime;
+        var oldRotation = transform.rotation;
+        while (timeElapsed < duration)
+        {
+            timeElapsed += Time.deltaTime;
+            var lerpValue = timeElapsed / duration;
+            // ease the lerpValue for faster early progression then slowdown closer to complete
+            lerpValue = 1-Mathf.Pow(1 - lerpValue, 5);
+            transform.rotation = Quaternion.Lerp(oldRotation, newRotation, lerpValue);
+            yield return null;
+        }
+        transform.rotation = newRotation;
+        onComplete?.Invoke();
+    }
 
     void Start()
     {
