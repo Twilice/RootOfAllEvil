@@ -31,6 +31,26 @@ public class GardenerController : MonoBehaviour
     private Vector3 originalScreenPos;
 
 
+    private int _hp = 100;
+    public int HP
+    {
+        get { return _hp; }
+        set
+        {
+            int oldHP = _hp;
+            _hp = value < 100 ? value : 100;
+            if (_hp < 0)
+            {
+                Destroy(gameObject);
+            }
+
+            if (_hp < oldHP)
+            {
+                // OnDamgeTaken
+            }
+        }
+    }
+
     public void AddExperience(int amount)
     {
         
@@ -113,6 +133,11 @@ public class GardenerController : MonoBehaviour
                     float duration = m_swingSpeed * 0.8f;
                     StartCoroutine(ScreenShake(duration, 0.15f));
                     Debug.Log(root.HP.ToString()+" HP left!");
+                }
+                if (collider.gameObject.tag == "Flower")
+                {
+                    var flower = collider.GetComponentInParent<Flower>();
+                    flower.HP -= m_damage;
                 }
             }
         }
