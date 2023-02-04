@@ -70,8 +70,7 @@ public class Root : MonoBehaviour
 
     public void CreateNewRoot()
     {
-        var newRootRotation = subRootSpawnPoint.localRotation * Quaternion.AngleAxis(UnityEngine.Random.Range(-90, 90), Vector3.up);
-        //var newRootRotation = SubRootSpawnPoint.rotation * Quaternion.AngleAxis(90, Vector3.up);
+        var newRootRotation = transform.localRotation * Quaternion.AngleAxis(UnityEngine.Random.Range(-90, 90), Vector3.up);
         var newRoot = Instantiate(Assets.rootPrefab, subRootSpawnPoint.position, newRootRotation, transform);
         subRoots.Add(newRoot);
     }
