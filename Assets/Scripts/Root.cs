@@ -10,10 +10,27 @@ public class Root : MonoBehaviour
     public Root parentRoot;
     public List<Root> subRoots;
 
+    public bool IsCutOff;
+
     // length of longest subroot
     public int Length => throw new NotImplementedException(); 
     // summed length of all subroots
     public int TotalLength => throw new NotImplementedException();
+
+    public void Grow()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void BranchOut()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnCut()
+    {
+        throw new NotImplementedException();
+    }
 
 
     // Start is called before the first frame update
