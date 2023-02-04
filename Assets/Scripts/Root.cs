@@ -49,6 +49,8 @@ public class Root : MonoBehaviour
     private float timeUntilGrown;
     
     private int _hp = 10;
+
+    private Flower flowerInstance;
     public int HP
     {
         get { return _hp; }
@@ -94,39 +96,42 @@ public class Root : MonoBehaviour
         return depthLength;
     }
 
-    public void Grow(int baseRootTotalLength)
+    public void Grow(int baseRootTotalLength, bool growAnimation)
     {
         bool consumeGrowth = true;
 
         consumeGrowth &= subRoots.Count <= UnityEngine.Random.Range(0, maxBranches);
         consumeGrowth &= subRootSpawnPoints.Count > 0;
 
-        if (consumeGrowth && UnityEngine.Random.value < 0.05f)
+        
+        if (consumeGrowth)
         {
-            var newFlower = Instantiate(flower);
-            newFlower.transform.position = transform.position;
-            float randRotation = UnityEngine.Random.Range(0f, 360f);
-            newFlower.transform.rotation = Quaternion.Euler(0, randRotation, 0f);
+            CreateNewRoot(growAnimation);
         }
-        else if (consumeGrowth)
+        else if (parentRoot != null && flowerInstance == null && UnityEngine.Random.value < 0.05f)
         {
-            CreateNewRoot();
+            flowerInstance = Instantiate(flower);
+            flowerInstance.transform.position = transform.position;
+            float randRotation = UnityEngine.Random.Range(0f, 360f);
+            flowerInstance.transform.rotation = Quaternion.Euler(0, randRotation, 0f);
         }
         else
         {
             var branchingRoot = subRoots[UnityEngine.Random.Range(0, subRoots.Count)];
-            branchingRoot.Grow(TotalLength);
+            branchingRoot.Grow(TotalLength, growAnimation);
         }
     }
 
-    public void CreateNewRoot()
+    public void CreateNewRoot(bool growAnimation)
     {
         var spawnPoint = subRootSpawnPoints[UnityEngine.Random.Range(0, subRootSpawnPoints.Count)];
         subRootSpawnPoints.Remove(spawnPoint);
         var newRootRotation = transform.rotation * spawnPoint.localRotation * Quaternion.AngleAxis(UnityEngine.Random.Range(-spawnAngle, spawnAngle), Vector3.up);
         var newRoot = Instantiate(Assets.rootPrefab, spawnPoint.position, newRootRotation, transform);
-        newRoot.parentRoot = this;
+        newRoot.Setup(this, growAnimation);
         subRoots.Add(newRoot);
+        // this makes no sense haha
+        HP = 2;
         StartCoroutine(IncreaseWidthCoroutine());
         if (parentRoot != null)
         {
@@ -134,8 +139,26 @@ public class Root : MonoBehaviour
         }
     }
 
+    public void Setup(Root parent, bool playGrowAnimation)
+    {
+        startScale = body.localScale * UnityEngine.Random.Range(0.8f, 1.1f); 
+        parentRoot = parent;
+        if (playGrowAnimation)
+        {
+            audioSource.clip = takingDamageClip;
+            timeUntilGrown = timeToGrowSeconds;
+            InvokeRepeating(nameof(RefreshRotationMovement), 1f, 2f);
+            StartCoroutine(StartGrowCoroutine());
+        }
+        else
+        {
+            body.localScale = startScale;
+        }
+    }
+    
     public void ChildCreatedRoot()
     {
+        HP = 2;
         StartCoroutine(IncreaseWidthCoroutine());
         if (parentRoot != null)
         {
@@ -151,7 +174,7 @@ public class Root : MonoBehaviour
     void ChildBranchCut(Root root)
     {
         subRoots.Remove(root);
-        
+        StartCoroutine(IncreaseWidthCoroutine());
     }
     
     private void OnCut(int depth)
@@ -234,22 +257,13 @@ public class Root : MonoBehaviour
         {
             timeElapsed += Time.deltaTime;
             var lerpValue = timeElapsed / duration;
-            // ease the lerpValue for faster early progression then slowdown closer to complete
+            // ease the lerpValue for faster early progrewssion then slowdown closer to complete
             lerpValue = 1-Mathf.Pow(1 - lerpValue, 5);
             transform.rotation = Quaternion.Lerp(oldRotation, newRotation, lerpValue);
             yield return null;
         }
         transform.rotation = newRotation;
         onComplete?.Invoke();
-    }
-
-    void Start()
-    {
-        audioSource.clip = takingDamageClip;
-        startScale = body.localScale * UnityEngine.Random.Range(0.8f, 1.1f);
-        timeUntilGrown = timeToGrowSeconds;
-        StartCoroutine(StartGrowCoroutine());
-        InvokeRepeating(nameof(RefreshRotationMovement), 1f, 2f);
     }
 
     // Update is called once per frame
@@ -275,7 +289,7 @@ public class Root : MonoBehaviour
             StartCoroutine(IncreaseWidthCoroutine());
             if (UnityEngine.Random.Range(0, 3) >= subRoots.Count)
             {
-                CreateNewRoot();
+                CreateNewRoot(true);
             }
         }
 
@@ -301,7 +315,6 @@ public class Root : MonoBehaviour
 
     IEnumerator IncreaseWidthCoroutine()
     {
-        HP = 2;
         Vector3 beforeScale = body.localScale;
         float scale = Mathf.Max(sizeScaleMultiplier * Mathf.Log(TotalLength), 0);
         

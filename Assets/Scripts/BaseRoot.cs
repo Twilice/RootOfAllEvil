@@ -11,6 +11,8 @@ public class BaseRoot : MonoBehaviour
 
     [Header("stat data")]
     public int initialRoots = 5;
+
+    public int initialOffshoots = 10;
     public float baseSpawnWeight = 5;
     public float spawnWeightPerSize = 1;
     public float bonusSpawnWeightPerSecond = 3;
@@ -67,15 +69,15 @@ public class BaseRoot : MonoBehaviour
         // todo :: this is not taking tickrate into account - changing tickrate will change spawnrate
         if (UnityEngine.Random.Range(0, maxSpawnWeightRoll) < CurrentSpawnWeight)
         {
-            Branch();
+            Branch(true);
         }
     }
 
-    public void Branch()
+    public void Branch(bool growAnimation)
     {
         currentBonusSpawnWeight += bonusSpawnWeightPerSpawn;
         var branchingRoot = roots[UnityEngine.Random.Range(0, roots.Count)];
-        branchingRoot.Grow(TotalLength);
+        branchingRoot.Grow(TotalLength, growAnimation);
     }
 
     public void CreateInitialRoots()
@@ -86,11 +88,17 @@ public class BaseRoot : MonoBehaviour
             CreateInitialRoot(angle + UnityEngine.Random.Range(-20,20));
             angle += 360 / initialRoots;
         }
+
+        for (int i = 0; i < initialOffshoots; i++)
+        {
+            Branch(false);
+        }
     }
 
     public void CreateInitialRoot(float angle, int forwardOffset = 1)
     {
         var newRoot = Instantiate(Assets.rootPrefab, transform.position, Quaternion.AngleAxis(angle, Vector3.up));
+        newRoot.Setup(null, false);
         roots.Add(newRoot);
     }
 }
