@@ -22,7 +22,7 @@ public class Root : MonoBehaviour
     public float maxBranches = 3;
 
     [Header("prefab object references")]
-    public Transform subRootSpawnPoint;
+    public List<Transform> subRootSpawnPoints;
     public Transform body;
 
     [Header("game states")]
@@ -102,8 +102,10 @@ public class Root : MonoBehaviour
 
     public void CreateNewRoot()
     {
-        var newRootRotation = transform.rotation * Quaternion.AngleAxis(UnityEngine.Random.Range(-spawnAngle, spawnAngle), Vector3.up);
-        var newRoot = Instantiate(Assets.rootPrefab, subRootSpawnPoint.position, newRootRotation, transform);
+        var spawnPoint = subRootSpawnPoints[UnityEngine.Random.Range(0, subRootSpawnPoints.Count)];
+        subRootSpawnPoints.Remove(spawnPoint);
+        var newRootRotation = transform.rotation * spawnPoint.localRotation * Quaternion.AngleAxis(UnityEngine.Random.Range(-spawnAngle, spawnAngle), Vector3.up);
+        var newRoot = Instantiate(Assets.rootPrefab, spawnPoint.position, newRootRotation, transform);
         newRoot.parentRoot = this;
         subRoots.Add(newRoot);
         StartCoroutine(IncreaseWidthCoroutine());
@@ -163,7 +165,7 @@ public class Root : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        startScale = body.localScale;
+        startScale = body.localScale/* * UnityEngine.Random.Range(0.8f, 1.1f)*/;
         timeUntilGrown = timeToGrowSeconds;
         StartCoroutine(StartGrowCoroutine());
     }
@@ -186,12 +188,12 @@ public class Root : MonoBehaviour
     
     IEnumerator StartGrowCoroutine()
     {
-        body.localScale = new Vector3(startScale.x, 0, startScale.z);
+        body.localScale = new Vector3(startScale.x, startScale.y, 0);
         while (!FullyGrown)
         {
             yield return new WaitForEndOfFrame();
             timeUntilGrown -= Time.deltaTime;
-            body.localScale = new Vector3(startScale.x, startScale.y*(1 - growSpeedCurve.Evaluate(timeUntilGrown/timeToGrowSeconds)), startScale.z);
+            body.localScale = new Vector3(startScale.x, startScale.y, startScale.z * (1 - growSpeedCurve.Evaluate(timeUntilGrown / timeToGrowSeconds)));
         }
     }
 
@@ -201,7 +203,7 @@ public class Root : MonoBehaviour
         Vector3 beforeScale = body.localScale;
         float scale = Mathf.Max(sizeScaleMultiplier * Mathf.Log(TotalLength), 0);
         
-        Vector3 targetScale = new Vector3(scale + startScale.x, startScale.y, scale + +startScale.z);
+        Vector3 targetScale = new Vector3(scale + startScale.x, scale + startScale.y, startScale.z);
         float increaseWidthTimer = timeToGrowSeconds;
         while (increaseWidthTimer > 0)
         {
