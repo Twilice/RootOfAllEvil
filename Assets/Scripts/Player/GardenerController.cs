@@ -17,6 +17,10 @@ public class GardenerController : MonoBehaviour
     public SphereCollider m_hitCollider;
     public int m_damage = 3;
 
+    [Header("Animations")]
+    public Animator runAnimator;
+    public Animator swingAnimator;
+
     [Header("Effects")]
     public Transform m_cameraTransform;
 
@@ -70,6 +74,8 @@ public class GardenerController : MonoBehaviour
         //Movement
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
+
+        runAnimator.SetBool("isRunning", (horizontal != 0 || vertical != 0));
 
         transform.position = transform.position + new Vector3(horizontal, 0, vertical) * m_moveSpeed * Time.deltaTime;
 
