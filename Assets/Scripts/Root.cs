@@ -3,17 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+using UnityEditor;
+
 using UnityEngine;
 
 public class Root : MonoBehaviour
 {
     public AssetReferenceContainer Assets => GameCoordinator.Instance.assetReferenceContainer;
     // todo :: should baseRoot be it's own class?
-    public static Root baseRoot;
+    public static BaseRoot baseRoot;
 
     [Header("stat data")]
     public float sizeScaleMultiplier = 0.5f;
     public float spawnAngle = 70;
+    public float maxBranches = 3;
 
     [Header("prefab object references")]
     public Transform subRootSpawnPoint;
@@ -32,6 +35,8 @@ public class Root : MonoBehaviour
     
     // length of longest subroot
     public int Length => throw new NotImplementedException();
+    // summed length of all subroots
+    public int TotalLength => CalculateTotalLength();
 
     public int CalculateLongestLength()
     {
@@ -61,12 +66,22 @@ public class Root : MonoBehaviour
 
         return depthLength;
     }
-    // summed length of all subroots
-    public int TotalLength => CalculateTotalLength();
 
-    public void Grow()
+    public void Grow(int baseRootTotalLength)
     {
-        throw new NotImplementedException();
+        bool consumeGrowth = true;
+
+        consumeGrowth &= subRoots.Count <= UnityEngine.Random.Range(0, maxBranches);
+
+        if (consumeGrowth)
+        {
+            CreateNewRoot();
+        }
+        else
+        {
+            var branchingRoot = subRoots[UnityEngine.Random.Range(0, subRoots.Count)];
+            branchingRoot.Grow(TotalLength);
+        }
     }
 
     public void CreateNewRoot()
@@ -74,11 +89,6 @@ public class Root : MonoBehaviour
         var newRootRotation = transform.rotation * Quaternion.AngleAxis(UnityEngine.Random.Range(-spawnAngle, spawnAngle), Vector3.up);
         var newRoot = Instantiate(Assets.rootPrefab, subRootSpawnPoint.position, newRootRotation, transform);
         subRoots.Add(newRoot);
-    }
-
-    public void BranchOut()
-    {
-        throw new NotImplementedException();
     }
 
     public void OnCut()
