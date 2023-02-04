@@ -406,6 +406,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2911909729538315235, guid: 2174a0dbbb66ff04f9c4fb1e33686285, type: 3}
+      propertyPath: spawnWeightPerSize
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1604689909802464745, guid: 2174a0dbbb66ff04f9c4fb1e33686285, type: 3}
       propertyPath: m_Name
       value: BaseRoot

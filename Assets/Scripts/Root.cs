@@ -22,12 +22,18 @@ public class Root : MonoBehaviour
     public float maxBranches = 3;
 
     [Header("prefab object references")]
-    public Transform subRootSpawnPoint;
+    public List<Transform> subRootSpawnPoints;
     public Transform body;
     public Renderer meshRenderer;
     
     [Header("game states")]
     public bool IsCutOff;
+
+    [Header("Sounds")]
+    public AudioSource audioSource;
+    public AudioClip takingDamageClip;
+    [Space]
+    public ParticleSystem hitEffect;
 
 
     // runtime game object references
@@ -89,6 +95,7 @@ public class Root : MonoBehaviour
         bool consumeGrowth = true;
 
         consumeGrowth &= subRoots.Count <= UnityEngine.Random.Range(0, maxBranches);
+        consumeGrowth &= subRootSpawnPoints.Count > 0;
 
         if (consumeGrowth)
         {
@@ -103,8 +110,10 @@ public class Root : MonoBehaviour
 
     public void CreateNewRoot()
     {
-        var newRootRotation = transform.rotation * Quaternion.AngleAxis(UnityEngine.Random.Range(-spawnAngle, spawnAngle), Vector3.up);
-        var newRoot = Instantiate(Assets.rootPrefab, subRootSpawnPoint.position, newRootRotation, transform);
+        var spawnPoint = subRootSpawnPoints[UnityEngine.Random.Range(0, subRootSpawnPoints.Count)];
+        subRootSpawnPoints.Remove(spawnPoint);
+        var newRootRotation = transform.rotation * spawnPoint.localRotation * Quaternion.AngleAxis(UnityEngine.Random.Range(-spawnAngle, spawnAngle), Vector3.up);
+        var newRoot = Instantiate(Assets.rootPrefab, spawnPoint.position, newRootRotation, transform);
         newRoot.parentRoot = this;
         subRoots.Add(newRoot);
         StartCoroutine(IncreaseWidthCoroutine());
@@ -167,14 +176,16 @@ public class Root : MonoBehaviour
     }
     public void TakeDamage(int damage)
     {
+        audioSource.Play();
+        hitEffect.Play();
         HP = -damage;
     }
 
 
-    // Start is called before the first frame update
     void Start()
     {
-        startScale = body.localScale;
+        audioSource.clip = takingDamageClip;
+        startScale = body.localScale * UnityEngine.Random.Range(0.8f, 1.1f);
         timeUntilGrown = timeToGrowSeconds;
         StartCoroutine(StartGrowCoroutine());
     }
@@ -197,12 +208,12 @@ public class Root : MonoBehaviour
     
     IEnumerator StartGrowCoroutine()
     {
-        body.localScale = new Vector3(startScale.x, 0, startScale.z);
+        body.localScale = new Vector3(startScale.x, startScale.y, 0);
         while (!FullyGrown)
         {
             yield return new WaitForEndOfFrame();
             timeUntilGrown -= Time.deltaTime;
-            body.localScale = new Vector3(startScale.x, startScale.y*(1 - growSpeedCurve.Evaluate(timeUntilGrown/timeToGrowSeconds)), startScale.z);
+            body.localScale = new Vector3(startScale.x, startScale.y, startScale.z * (1 - growSpeedCurve.Evaluate(timeUntilGrown / timeToGrowSeconds)));
         }
     }
 
@@ -212,7 +223,7 @@ public class Root : MonoBehaviour
         Vector3 beforeScale = body.localScale;
         float scale = Mathf.Max(sizeScaleMultiplier * Mathf.Log(TotalLength), 0);
         
-        Vector3 targetScale = new Vector3(scale + startScale.x, startScale.y, scale + +startScale.z);
+        Vector3 targetScale = new Vector3(scale + startScale.x, scale + startScale.y, startScale.z);
         float increaseWidthTimer = timeToGrowSeconds;
         while (increaseWidthTimer > 0)
         {
