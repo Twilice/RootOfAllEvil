@@ -213,6 +213,10 @@ public class Root : MonoBehaviour
             particleSystem.GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
 
+        if (flowerInstance != null)
+        {
+            Destroy(flowerInstance.gameObject);
+        }
         Destroy(this.gameObject);
     }
     public void TakeDamage(int damage)
