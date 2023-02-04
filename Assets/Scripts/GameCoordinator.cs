@@ -30,9 +30,8 @@ public class GameCoordinator : MonoBehaviour
 
         Debug.Log("Test spawn a root");
         Instantiate(assetReferenceContainer.rootPrefab, new Vector3(1, 0, 0), Quaternion.AngleAxis(0, Vector3.up));
-        Instantiate(assetReferenceContainer.rootPrefab, new Vector3(1, 0, 0), Quaternion.AngleAxis(90, Vector3.up));
-        Instantiate(assetReferenceContainer.rootPrefab, new Vector3(1, 0, 0), Quaternion.AngleAxis(180, Vector3.up));
-        Instantiate(assetReferenceContainer.rootPrefab, new Vector3(1, 0, 0), Quaternion.AngleAxis(270, Vector3.up));
+        Instantiate(assetReferenceContainer.rootPrefab, new Vector3(1, 0, 0), Quaternion.AngleAxis(120, Vector3.up));
+        Instantiate(assetReferenceContainer.rootPrefab, new Vector3(1, 0, 0), Quaternion.AngleAxis(240, Vector3.up));
     }
   
 }
