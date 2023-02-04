@@ -65,6 +65,7 @@ public class GardenerController : MonoBehaviour
     }
 
     // Update is called once per frame
+    private bool workaroundAttackCooldown = true;
     void Update()
     {
         //Movement
@@ -81,12 +82,17 @@ public class GardenerController : MonoBehaviour
 
 
         // Swing
-        if (m_axePivot.localRotation == originalRotation && Input.GetKeyDown(KeyCode.Mouse0))
+        if (m_axePivot.localRotation == originalRotation)
+        {
+            workaroundAttackCooldown = true;
+        }
+        if (workaroundAttackCooldown && Input.GetKeyDown(KeyCode.Mouse0))
         {
             rotateBack = false;
             PlaySoundClip();
             StartCoroutine(SmoothRotate(m_rotationAngle));
             CheckForRoots();
+            workaroundAttackCooldown = false;
         }
     }
 
