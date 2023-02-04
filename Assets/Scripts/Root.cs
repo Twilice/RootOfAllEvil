@@ -16,6 +16,8 @@ public class Root : MonoBehaviour
     [Header("stat data")]
     public float sizeScaleMultiplier = 0.5f;
     public float spawnAngle = 70;
+    public float timeToGrowSeconds = 3;
+    public AnimationCurve growSpeedCurve;
     public float maxBranches = 3;
 
     [Header("prefab object references")]
@@ -30,8 +32,21 @@ public class Root : MonoBehaviour
     [Header("runtime object references")]
     public Root parentRoot;
     public List<Root> subRoots = new List<Root>();
-
+    
     private Vector3 startScale;
+    private float timeUntilGrown;
+    
+    private int _hp = 10;
+    public int HP
+    {
+        get { return _hp; }
+        set { _hp += value;
+            if (_hp <= 0) {
+                OnCut();
+            }
+        }
+    }
+    public bool FullyGrown => timeUntilGrown <= 0;
     
     // length of longest subroot
     public int Length => throw new NotImplementedException();
@@ -91,9 +106,25 @@ public class Root : MonoBehaviour
         subRoots.Add(newRoot);
     }
 
-    public void OnCut()
+    public void BranchOut()
     {
         throw new NotImplementedException();
+    }
+
+    private IEnumerator OnCut()
+    {
+        yield return new WaitForSeconds(0.4f);
+        foreach (var child in subRoots)
+        {
+            
+        }
+        Destroy(this.gameObject);
+        
+    }
+
+    public void TakeDamage(int damage)
+    {
+        HP = -damage;
     }
 
 
@@ -101,20 +132,50 @@ public class Root : MonoBehaviour
     void Start()
     {
         startScale = body.localScale;
+        timeUntilGrown = timeToGrowSeconds;
+        StartCoroutine(StartGrowCoroutine());
     }
 
     // Update is called once per frame
     void Update()
     {
-        float scale = Mathf.Max(sizeScaleMultiplier * Mathf.Log(TotalLength), 0);
-        body.localScale = new Vector3(scale + startScale.x, startScale.y, scale + + startScale.z);
         // debug test :: only
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && FullyGrown)
         {
+            StartCoroutine(IncreaseWidthCoroutine());
             if (UnityEngine.Random.Range(0, 3) >= subRoots.Count)
             {
                 CreateNewRoot();
             }
+        }
+    }
+    
+    
+    
+    IEnumerator StartGrowCoroutine()
+    {
+        body.localScale = new Vector3(startScale.x, 0, startScale.z);
+        while (!FullyGrown)
+        {
+            yield return new WaitForEndOfFrame();
+            timeUntilGrown -= Time.deltaTime;
+            body.localScale = new Vector3(startScale.x, 1 - growSpeedCurve.Evaluate(timeUntilGrown/timeToGrowSeconds), startScale.z);
+        }
+    }
+
+    IEnumerator IncreaseWidthCoroutine()
+    {
+        HP = 2;
+        Vector3 beforeScale = body.localScale;
+        float scale = Mathf.Max(sizeScaleMultiplier * Mathf.Log(TotalLength), 0);
+        
+        Vector3 targetScale = new Vector3(scale + startScale.x, startScale.y, scale + +startScale.z);
+        float increaseWidthTimer = timeToGrowSeconds;
+        while (increaseWidthTimer > 0)
+        {
+            yield return new WaitForEndOfFrame();
+            increaseWidthTimer -= Time.deltaTime;
+            body.localScale = Vector3.Lerp(beforeScale, targetScale, 1 - increaseWidthTimer/timeToGrowSeconds);
         }
     }
 }
