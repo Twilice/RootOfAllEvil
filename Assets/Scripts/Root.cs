@@ -31,6 +31,8 @@ public class Root : MonoBehaviour
     [Header("Sounds")]
     public AudioSource audioSource;
     public AudioClip takingDamageClip;
+    [Space]
+    public ParticleSystem hitEffect;
 
 
     // runtime game object references
@@ -163,6 +165,7 @@ public class Root : MonoBehaviour
     public void TakeDamage(int damage)
     {
         audioSource.Play();
+        hitEffect.Play();
         HP = -damage;
     }
 
