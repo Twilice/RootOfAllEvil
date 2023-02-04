@@ -5,12 +5,17 @@ using UnityEngine;
 public class GardenerController : MonoBehaviour
 {
     // Publics
-    public Transform m_body;
+    [Header("Move")]
     public float m_moveSpeed = 10f;
+    [Header("Turning")]
+    public Transform m_body;
     public float m_sensitivity = 10f;
+    [Header("Swing")]
     public float m_swingSpeed = 0.25f;
     public float m_rotationAngle = 90f;
     public Transform m_axePivot;
+    public SphereCollider m_hitCollider;
+    public int m_damage = 3;
     
     // Privates
     private Quaternion originalRotation;
@@ -41,10 +46,11 @@ public class GardenerController : MonoBehaviour
 
 
         // Swing
-        if (m_axePivot.localRotation == originalRotation && Input.GetKeyDown(KeyCode.Space))
+        if (m_axePivot.localRotation == originalRotation && Input.GetKeyDown(KeyCode.Mouse0))
         {
             rotateBack = false;
             StartCoroutine(SmoothRotate(m_rotationAngle));
+            CheckForRoots();
         }
     }
 
@@ -71,6 +77,26 @@ public class GardenerController : MonoBehaviour
         else
         {
             m_axePivot.localRotation = originalRotation;
+        }
+    }
+
+    void CheckForRoots()
+    {
+        // Use Physics.OverlapSphere to check for colliders within the given collider
+        Collider[] colliders = Physics.OverlapSphere(m_hitCollider.bounds.center, m_hitCollider.bounds.extents.magnitude);
+
+        // Check if there are any colliders within the given collider
+        if (colliders.Length > 0)
+        {
+            foreach(var collider in colliders)
+            {
+                if (collider.gameObject.tag == "Root")
+                {
+                    var root = collider.GetComponentInParent<Root>();
+                    root.TakeDamage(m_damage);
+                    Debug.Log(root.HP.ToString()+" HP left!");
+                }
+            }
         }
     }
 }

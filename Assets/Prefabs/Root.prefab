@@ -77,6 +77,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sizeScaleMultiplier: 0.2
+  spawnAngle: 70
   subRootSpawnPoint: {fileID: 5064505048729759640}
   body: {fileID: 8733047542251153441}
   IsCutOff: 0
@@ -94,7 +95,7 @@ GameObject:
   - component: {fileID: 3347180165524244694}
   m_Layer: 0
   m_Name: Collider
-  m_TagString: Untagged
+  m_TagString: Root
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

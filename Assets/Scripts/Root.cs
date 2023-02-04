@@ -29,6 +29,17 @@ public class Root : MonoBehaviour
     public List<Root> subRoots = new List<Root>();
 
     private Vector3 startScale;
+
+    private int _hp = 10;
+    public int HP
+    {
+        get { return _hp; }
+        set { _hp += value;
+            if (_hp <= 0) {
+                Destroy(this.gameObject);
+            }
+        }
+    }
     
     // length of longest subroot
     public int Length => throw new NotImplementedException();
@@ -86,6 +97,11 @@ public class Root : MonoBehaviour
         throw new NotImplementedException();
     }
 
+    public void TakeDamage(int damage)
+    {
+        HP = -damage;
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -99,8 +115,9 @@ public class Root : MonoBehaviour
         float scale = Mathf.Max(sizeScaleMultiplier * Mathf.Log(TotalLength), 0);
         body.localScale = new Vector3(scale + startScale.x, startScale.y, scale + + startScale.z);
         // debug test :: only
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.G))
         {
+            HP = 2;
             if (UnityEngine.Random.Range(0, 3) >= subRoots.Count)
             {
                 CreateNewRoot();
