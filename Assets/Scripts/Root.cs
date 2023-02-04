@@ -106,8 +106,22 @@ public class Root : MonoBehaviour
         var newRoot = Instantiate(Assets.rootPrefab, subRootSpawnPoint.position, newRootRotation, transform);
         newRoot.parentRoot = this;
         subRoots.Add(newRoot);
+        StartCoroutine(IncreaseWidthCoroutine());
+        if (parentRoot != null)
+        {
+            parentRoot.ChildCreatedRoot();
+        }
     }
 
+    public void ChildCreatedRoot()
+    {
+        StartCoroutine(IncreaseWidthCoroutine());
+        if (parentRoot != null)
+        {
+            parentRoot.ChildCreatedRoot();
+        }
+    }
+    
     public void BranchOut()
     {
         throw new NotImplementedException();
@@ -170,7 +184,7 @@ public class Root : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
             timeUntilGrown -= Time.deltaTime;
-            body.localScale = new Vector3(startScale.x, 1 - growSpeedCurve.Evaluate(timeUntilGrown/timeToGrowSeconds), startScale.z);
+            body.localScale = new Vector3(startScale.x, startScale.y*(1 - growSpeedCurve.Evaluate(timeUntilGrown/timeToGrowSeconds)), startScale.z);
         }
     }
 
