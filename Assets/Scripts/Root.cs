@@ -239,9 +239,24 @@ public class Root : MonoBehaviour
         startScale = body.localScale * UnityEngine.Random.Range(0.8f, 1.1f);
         timeUntilGrown = timeToGrowSeconds;
         StartCoroutine(StartGrowCoroutine());
+        InvokeRepeating(nameof(RefreshRotationMovement), 1f, 2f);
     }
 
     // Update is called once per frame
+    private float slowRotationDisplacement;
+    void RefreshRotationMovement()
+    {
+        slowRotationDisplacement = UnityEngine.Random.Range(-0.35f, 0.35f);
+        if (TotalLength == 0)
+        {
+            slowRotationDisplacement *= 4;
+        }
+        else if (TotalLength == 1)
+        {
+            slowRotationDisplacement *= 2;
+        }
+    }
+
     void Update()
     {
         // debug test :: only
@@ -252,6 +267,12 @@ public class Root : MonoBehaviour
             {
                 CreateNewRoot();
             }
+        }
+
+        if (isDisplacing == false)
+        {
+            // use coroutine to move a longer distance before trying to change direction
+            transform.rotation = transform.rotation * Quaternion.AngleAxis(slowRotationDisplacement * Time.deltaTime, Vector3.up);
         }
     }
     
