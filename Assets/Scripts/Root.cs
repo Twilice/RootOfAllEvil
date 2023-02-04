@@ -24,13 +24,16 @@ public class Root : MonoBehaviour
     [Header("prefab object references")]
     public List<Transform> subRootSpawnPoints;
     public Transform body;
-
+    public Renderer meshRenderer;
+    
     [Header("game states")]
     public bool IsCutOff;
 
     [Header("Sounds")]
     public AudioSource audioSource;
     public AudioClip takingDamageClip;
+    [Space]
+    public ParticleSystem hitEffect;
 
 
     // runtime game object references
@@ -92,6 +95,7 @@ public class Root : MonoBehaviour
         bool consumeGrowth = true;
 
         consumeGrowth &= subRoots.Count <= UnityEngine.Random.Range(0, maxBranches);
+        consumeGrowth &= subRootSpawnPoints.Count > 0;
 
         if (consumeGrowth)
         {
@@ -157,21 +161,31 @@ public class Root : MonoBehaviour
         }
         
         transform.SetParent(GameCoordinator.Instance.transform);
-        Destroy(this.gameObject, deathTime*depth);
+        StartCoroutine(Die(deathTime * depth));
     }
 
+    private IEnumerator Die(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        var posx = UnityEngine.Random.Range(-meshRenderer.bounds.extents.x, meshRenderer.bounds.extents.x);
+        var posy = UnityEngine.Random.Range(-meshRenderer.bounds.extents.y, meshRenderer.bounds.extents.y);
+        var posz = UnityEngine.Random.Range(-meshRenderer.bounds.extents.z, meshRenderer.bounds.extents.z);
+        var pos = new Vector3(posx, posy, posz) + meshRenderer.bounds.center;
+        Instantiate(GameCoordinator.Instance.assetReferenceContainer.experiencePickupPrefab, pos, Quaternion.identity);
+        Destroy(this.gameObject);
+    }
     public void TakeDamage(int damage)
     {
         audioSource.Play();
+        hitEffect.Play();
         HP = -damage;
     }
 
 
-    // Start is called before the first frame update
     void Start()
     {
         audioSource.clip = takingDamageClip;
-        startScale = body.localScale;
+        startScale = body.localScale * UnityEngine.Random.Range(0.8f, 1.1f);
         timeUntilGrown = timeToGrowSeconds;
         StartCoroutine(StartGrowCoroutine());
     }

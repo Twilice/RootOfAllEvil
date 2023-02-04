@@ -31,6 +31,11 @@ public class GardenerController : MonoBehaviour
     private Vector3 originalScreenPos;
 
 
+    public void AddExperience(int amount)
+    {
+        
+    }
+    
     // Start is called before the first frame update
     void Start()
     {
