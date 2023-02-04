@@ -36,3 +36,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+Assets/Scripts/.idea/.idea.Scripts.dir/.idea/indexLayout.xml
+Assets/Scripts/.idea/.idea.Scripts.dir/.idea/vcs.xml
+.idea/.idea.RootOfAllEvil/.idea/vcs.xml
+.idea/.idea.RootOfAllEvil/.idea/indexLayout.xml
