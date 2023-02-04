@@ -70,7 +70,7 @@ public class Root : MonoBehaviour
 
     public void CreateNewRoot()
     {
-        var newRootRotation = transform.localRotation * Quaternion.AngleAxis(UnityEngine.Random.Range(-45, 45), Vector3.up);
+        var newRootRotation = transform.rotation * Quaternion.Euler(0, UnityEngine.Random.Range(-70, 70), 0);
         var newRoot = Instantiate(Assets.rootPrefab, subRootSpawnPoint.position, newRootRotation, transform);
         subRoots.Add(newRoot);
     }
@@ -95,7 +95,7 @@ public class Root : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float scale = sizeScaleMultiplier * Mathf.Sqrt(TotalLength);
+        float scale = Mathf.Max(sizeScaleMultiplier * Mathf.Log(TotalLength), 0);
         body.localScale = new Vector3(scale + startScale.x, startScale.y, scale + + startScale.z);
         // debug test :: only
         if (Input.GetKeyDown(KeyCode.Space))
