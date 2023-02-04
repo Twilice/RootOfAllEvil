@@ -189,10 +189,22 @@ public class Root : MonoBehaviour
         
         isDisplacing = true;
         var originalRotation = transform.rotation;
-        var newRotation = transform.rotation * Quaternion.AngleAxis(40, Vector3.up);
 
-        StartCoroutine(_DisplaceOverTime(0.10f, newRotation, 
-            () => StartCoroutine(_DisplaceOverTime(0.85f, originalRotation, () => isDisplacing = false))));
+        var diffVector = GameCoordinator.Instance.gardenerInstance.transform.position - transform.position;
+        var hitRotation = Quaternion.FromToRotation(diffVector, transform.rotation.eulerAngles);
+
+        Quaternion newRotation;
+        if (UnityEngine.Random.Range(0, 2) > 0)
+        {
+            newRotation = transform.rotation * Quaternion.AngleAxis(20, Vector3.up);
+        }
+        else
+        {
+            newRotation = transform.rotation * Quaternion.AngleAxis(-20, Vector3.up);
+        }
+
+        StartCoroutine(_DisplaceOverTime(0.15f, newRotation, 
+            () => StartCoroutine(_DisplaceOverTime(1.0f, originalRotation, () => isDisplacing = false))));
     }
 
     // todo :: would be cool if effect is stackable
