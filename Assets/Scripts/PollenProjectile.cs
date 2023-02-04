@@ -8,8 +8,11 @@ public class PollenProjectile : MonoBehaviour
     public float m_speed;
     public float m_duration;
     public SphereCollider collider;
+    public Transform pollenTransform;
 
     private float startTime;
+    private Vector3 originalSporePos;
+    private bool shake = false;
 
     public void SetUp(Vector3 position, Vector3 direction, float speed, float duration)
     {
@@ -43,9 +46,37 @@ public class PollenProjectile : MonoBehaviour
             }
         }
 
+        if (!shake)
+        {
+            StartCoroutine(FlowShake(5f, 2, 2f));
+        }
+
         if (Time.time - startTime >= m_duration)
         {
             Destroy(gameObject);
         }
+    }
+
+    private IEnumerator FlowShake(float duration, float sinusSpeed, float magnitude)
+    {
+        shake = true;
+        originalSporePos = pollenTransform.localPosition;
+
+        float elapsed = 0.0f;
+
+        while (elapsed < duration)
+        {
+            float x = Mathf.Sin(elapsed*sinusSpeed) * magnitude;
+            //float y = Random.Range(-1f, 1f) * magnitude;
+
+            pollenTransform.localPosition = new Vector3(originalSporePos.x + x, originalSporePos.y, originalSporePos.z + x);
+
+            elapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        pollenTransform.localPosition = originalSporePos;
+        shake = false;
     }
 }

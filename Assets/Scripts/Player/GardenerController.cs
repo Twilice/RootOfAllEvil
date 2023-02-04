@@ -134,6 +134,11 @@ public class GardenerController : MonoBehaviour
                     StartCoroutine(ScreenShake(duration, 0.15f));
                     Debug.Log(root.HP.ToString()+" HP left!");
                 }
+                if (collider.gameObject.tag == "Flower")
+                {
+                    var flower = collider.GetComponentInParent<Flower>();
+                    flower.HP -= m_damage;
+                }
             }
         }
     }
