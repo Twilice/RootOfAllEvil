@@ -10,6 +10,7 @@ public class BaseRoot : MonoBehaviour
     public AssetReferenceContainer Assets => GameCoordinator.Instance.assetReferenceContainer;
 
     [Header("stat data")]
+    public int initialRoots = 5;
     public float baseSpawnWeight = 5;
     public float spawnWeightPerSize = 1;
     public float bonusSpawnWeightPerSecond = 3;
@@ -46,7 +47,7 @@ public class BaseRoot : MonoBehaviour
         Root.baseRoot = this;
     }
 
-    private const float tickRate = 1/10f;
+    private const float tickRate = 1/20f;
     private const float tickDelay = 1.5f;
     void Start()
     {
@@ -63,7 +64,7 @@ public class BaseRoot : MonoBehaviour
     public void TryBranch()
     {
         DEBUG_currentSpawnWeight = CurrentSpawnWeight;
-        // todo :: this is not taking tickrate into account
+        // todo :: this is not taking tickrate into account - changing tickrate will change spawnrate
         if (UnityEngine.Random.Range(0, maxSpawnWeightRoll) < CurrentSpawnWeight)
         {
             Branch();
@@ -79,9 +80,12 @@ public class BaseRoot : MonoBehaviour
 
     public void CreateInitialRoots()
     {
-        CreateInitialRoot(0);
-        CreateInitialRoot(120);
-        CreateInitialRoot(240);
+        var angle = 0;
+        for (int i = 0; i < initialRoots; i++)
+        {
+            CreateInitialRoot(angle + UnityEngine.Random.Range(-20,20));
+            angle += 360 / initialRoots;
+        }
     }
 
     public void CreateInitialRoot(float angle, int forwardOffset = 1)

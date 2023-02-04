@@ -45,9 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9dc99de9ffe0e642b512c3bed8a10e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseSpawnWeight: 5
-  spawnWeightPerSize: 1
-  bonusSpawnWeightPerSecond: 3
+  initialRoots: 5
+  baseSpawnWeight: 10
+  spawnWeightPerSize: 5
+  bonusSpawnWeightPerSecond: 20
   bonusSpawnWeightPerSpawn: -5
   maxSpawnWeightRoll: 100
   currentBonusSpawnWeight: 0

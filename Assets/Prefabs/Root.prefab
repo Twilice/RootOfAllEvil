@@ -103,6 +103,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  maxBranches: 3
   subRootSpawnPoint: {fileID: 5064505048729759640}
   body: {fileID: 8733047542251153441}
   IsCutOff: 0
@@ -262,7 +263,7 @@ Transform:
   m_GameObject: {fileID: 7936259358800304998}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 1, z: 0.3}
+  m_LocalScale: {x: 0.3, y: 0.38, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 761213174952217732}
