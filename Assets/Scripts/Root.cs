@@ -127,7 +127,14 @@ public class Root : MonoBehaviour
             child.OnCut(depth + 1);
         }
 
-        baseRoot.roots.Remove(this);
+        if (baseRoot.roots.Contains(this))
+        {
+            baseRoot.roots.Remove(this);
+        }
+        else
+        {
+            parentRoot.subRoots.Remove(this);
+        }
         
         transform.SetParent(GameCoordinator.Instance.transform);
         Destroy(this.gameObject, deathTime*depth);
