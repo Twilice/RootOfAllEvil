@@ -10,7 +10,15 @@ public class WatchPlayer : MonoBehaviour
 
     public float intervalBetweenEyeDarts = 0.2f;
     public float eyeDartSpeed = 5;
-    
+
+    [Header("Projectile")]
+    public PollenProjectile spore;
+    public float interval = 1.0f;
+    public float speed = 10.0f;
+    public float duration = 2.0f;
+
+    private float timer;
+
     private GardenerController gardener;
     private bool darting;
 
@@ -48,6 +56,16 @@ public class WatchPlayer : MonoBehaviour
         var ploc = gardener.transform.position;
         float angleBetweenEyeAndPlayer = Mathf.Atan2(loc.z - ploc.z, loc.x - ploc.x);
         transform.rotation = AngleToEdge(angleBetweenEyeAndPlayer);
+
+        timer -= Time.deltaTime;
+        if (timer <= 0)
+        {
+            timer = interval;
+            //float angle = angleBetweenEyeAndPlayer;
+            Vector3 direction = AngleToEdge(angleBetweenEyeAndPlayer) * transform.up;
+            var projectile = Instantiate(spore);
+            projectile.SetUp(transform.position, direction, speed, duration);
+        }
     }
 
     private Quaternion AngleToEdge(float angle)

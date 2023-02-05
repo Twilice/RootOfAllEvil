@@ -357,6 +357,7 @@ MonoBehaviour:
   m_rotationAngle: 90
   m_axePivot: {fileID: 7382885624325741364}
   m_hitCollider: {fileID: 1521739658}
+  m_axeMesh: {fileID: 5087376374127515040}
   m_damage: 3
   runAnimator: {fileID: 2412698564422619420}
   swingAnimator: {fileID: 3198320991885673415}
@@ -463,6 +464,14 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: f222bec2b27fbf442bd4be9d21e76c09, type: 3}
       propertyPath: m_LocalScale.x
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f222bec2b27fbf442bd4be9d21e76c09, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f222bec2b27fbf442bd4be9d21e76c09, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f222bec2b27fbf442bd4be9d21e76c09, type: 3}
       propertyPath: m_LocalPosition.x
@@ -670,6 +679,30 @@ PrefabInstance:
     - target: {fileID: 2776501522624240675, guid: 3a061eb77ca4c5c45b190a13d25821b4, type: 3}
       propertyPath: m_Name
       value: LevelUp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4579900647665168536, guid: 3a061eb77ca4c5c45b190a13d25821b4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 7328936698317809748, guid: 3a061eb77ca4c5c45b190a13d25821b4, type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7328936698317809748, guid: 3a061eb77ca4c5c45b190a13d25821b4, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7328936698317809748, guid: 3a061eb77ca4c5c45b190a13d25821b4, type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.scalar
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7495355684732807880, guid: 3a061eb77ca4c5c45b190a13d25821b4, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7495355684732807880, guid: 3a061eb77ca4c5c45b190a13d25821b4, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a061eb77ca4c5c45b190a13d25821b4, type: 3}

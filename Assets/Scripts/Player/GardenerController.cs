@@ -19,6 +19,7 @@ public class GardenerController : MonoBehaviour
     public float m_rotationAngle = 90f;
     public Transform m_axePivot;
     public SphereCollider m_hitCollider;
+    public Transform m_axeMesh;
     public int m_damage = 3;
 
     [Header("Animations")]
@@ -70,6 +71,9 @@ public class GardenerController : MonoBehaviour
             _lvl = value;
             if (_lvl > oldLVL)
             {
+                float axeSize = 1 + (((float)_lvl - 1f) * 0.1f);
+                m_axeMesh.localScale = new Vector3(-axeSize, axeSize, axeSize);
+                m_hitCollider.radius += 0.1f;
                 m_bodyAudioScorce.clip = m_levelUpClip;
                 m_bodyAudioScorce.Play();
                 m_levelUpEffect.Play();
@@ -125,13 +129,13 @@ public class GardenerController : MonoBehaviour
         runAnimator.SetBool("isRunning", (horizontal != 0 || vertical != 0));
 
         transform.position = transform.position + new Vector3(horizontal, 0, vertical) * currentMoveSpeed * Time.deltaTime;
-
-        //Rotation
-        Vector3 mousePos = Input.mousePosition;
-        Vector3 screenPoint = Camera.main.ScreenToViewportPoint(mousePos);
-        Quaternion targetRotation = Quaternion.LookRotation(new Vector3(screenPoint.x - 0.5f, 0f, screenPoint.y - 0.5f));
-        m_body.rotation = Quaternion.Slerp(m_body.rotation, targetRotation, m_sensitivity * Time.deltaTime);
-
+        
+        var moveDir = new Vector3(horizontal, 0, vertical);
+        if (moveDir.sqrMagnitude > 0.1)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(new Vector3(moveDir.x, 0f, moveDir.z));
+            m_body.rotation = Quaternion.Slerp(m_body.rotation, targetRotation, m_sensitivity * Time.deltaTime);
+        }
 
         // Swing
         if (workaroundAttackCooldown && Input.GetKeyDown(KeyCode.Mouse0))
@@ -155,7 +159,11 @@ public class GardenerController : MonoBehaviour
         {
             if (col.tag == "Root")
             {
-                currentRootLengthTouched += col.GetComponentInParent<Root>().TotalLength;
+                var root = col.GetComponentInParent<Root>();
+                if (root != null)
+                {
+                    currentRootLengthTouched += col.GetComponentInParent<Root>().TotalLength;
+                }
             }
         }
         currentMoveSpeed = MathF.Max(m_moveSpeed*(1-currentRootLengthTouched/(float)m_maxRootStrengthWalkability), minMoveSpeed);
@@ -211,7 +219,7 @@ public class GardenerController : MonoBehaviour
                 if (collider.gameObject.tag == "Root")
                 {
                     missedRoot = false;
-                    var root = collider.GetComponentInParent<Root>();                    
+                    var root = collider.GetComponentInParent<Root>();    
                     root.TakeDamage(m_damage * LVL, collider.ClosestPoint(m_hitCollider.transform.position));
                     float duration = m_swingSpeed * 0.8f;
                     m_followCamera.ShakeCamera(duration, 0.15f);
