@@ -230,6 +230,8 @@ public class Root : MonoBehaviour
         {
             flowerInstance.Die();
         }
+        
+        Camera.main.GetComponent<CameraFollow>().ShakeCamera(0.1f, 0.03f);
         Destroy(this.gameObject);
     }
     private static float pitch = 1;
