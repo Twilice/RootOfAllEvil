@@ -71,9 +71,9 @@ public class GardenerController : MonoBehaviour
             _lvl = value;
             if (_lvl > oldLVL)
             {
-                float axeSize = 1 + (((float)_lvl - 1f) * 0.1f);
+                float axeSize = 1 + (((float)_lvl - 1f) * 0.2f);
                 m_axeMesh.localScale = new Vector3(-axeSize, axeSize, axeSize);
-                m_hitCollider.radius += 0.1f;
+                m_hitCollider.radius += 0.2f;
                 m_bodyAudioScorce.clip = m_levelUpClip;
                 m_bodyAudioScorce.Play();
                 m_levelUpEffect.Play();
