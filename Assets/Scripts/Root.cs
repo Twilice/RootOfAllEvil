@@ -20,12 +20,14 @@ public class Root : MonoBehaviour
     public AnimationCurve growSpeedCurve;
     public float deathTime = 0.4f;
     public float maxBranches = 3;
+    public int extraHpPerChildRoot = 5;
 
     [Header("prefab object references")]
     public List<Transform> subRootSpawnPoints;
     public Transform body;
     public Renderer meshRenderer;
     public List<Transform> particlesToMakeStandaloneOnDestroy;
+    public GameObject onDeadParticleSystem;
 
     [Header("game states")]
     public bool IsCutOff;
@@ -102,13 +104,16 @@ public class Root : MonoBehaviour
 
         consumeGrowth &= subRoots.Count <= UnityEngine.Random.Range(0, maxBranches);
         consumeGrowth &= subRootSpawnPoints.Count > 0;
-
+        consumeGrowth &= FullyGrown;
         
         if (consumeGrowth)
         {
             CreateNewRoot(growAnimation);
+            return;
         }
-        else if (parentRoot != null && flowerInstance == null && UnityEngine.Random.value < 0.05f)
+
+        var spawnFlower = UnityEngine.Random.value < 0.05f && TotalLength <= 5;
+        if (parentRoot != null && flowerInstance == null && spawnFlower)
         {
             flowerInstance = Instantiate(flower);
             flowerInstance.transform.parent = transform;
@@ -116,7 +121,7 @@ public class Root : MonoBehaviour
             float randRotation = UnityEngine.Random.Range(0f, 360f);
             flowerInstance.transform.rotation = Quaternion.Euler(0, randRotation, 0f);
         }
-        else
+        else if (subRoots.Count <= UnityEngine.Random.Range(0, maxBranches) == false)
         {
             var branchingRoot = subRoots[UnityEngine.Random.Range(0, subRoots.Count)];
             branchingRoot.Grow(TotalLength, growAnimation);
@@ -132,7 +137,7 @@ public class Root : MonoBehaviour
         newRoot.Setup(this, growAnimation);
         subRoots.Add(newRoot);
         // this makes no sense haha
-        HP = 2;
+        HP = extraHpPerChildRoot;
         StartCoroutine(IncreaseWidthCoroutine());
         if (parentRoot != null)
         {
@@ -196,6 +201,11 @@ public class Root : MonoBehaviour
         }
         
         transform.SetParent(GameCoordinator.Instance.transform);
+        if (onDeadParticleSystem != null)
+        {
+            onDeadParticleSystem.transform.parent = null;
+            onDeadParticleSystem.SetActive(true);
+        }
         StartCoroutine(Die(deathTime * depth));
     }
 
@@ -220,9 +230,11 @@ public class Root : MonoBehaviour
         }
         Destroy(this.gameObject);
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, Vector3 impactPoint)
     {
         audioSource.Play();
+        impactPoint.y = hitEffect.transform.position.y;
+        hitEffect.transform.position = impactPoint;
         hitEffect.Play();
         HP = -damage;
         DisplaceRoots(damage);
