@@ -9,7 +9,7 @@
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=960 height=600></canvas>
+      <canvas id="unity-canvas" width=768 height=480></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
@@ -55,24 +55,12 @@
         updateBannerVisibility();
       }
 
-      // var buildUrl = "Build";
-      // var loaderUrl = buildUrl + "/Builds.loader.js";
-      // var config = {
-      //   dataUrl: buildUrl + "/Builds.data",
-      //   frameworkUrl: buildUrl + "/Builds.framework.js",
-      //   codeUrl: buildUrl + "/Builds.wasm",
-      //   streamingAssetsUrl: "StreamingAssets",
-      //   companyName: "DefaultCompany",
-      //   productName: "RootOfAllEvil",
-      //   productVersion: "0.1",
-      //   showBanner: unityShowBanner,
-      // };
-
-      var loaderUrl = "Buildsloader.js";
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/Builds.loader.js";
       var config = {
-        dataUrl: "Builds.data",
-        frameworkUrl: "Buildsframework.js",
-        codeUrl: "Builds.wasm",
+        dataUrl: buildUrl + "/Builds.data",
+        frameworkUrl: buildUrl + "/Builds.framework.js",
+        codeUrl: buildUrl + "/Builds.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "RootOfAllEvil",
