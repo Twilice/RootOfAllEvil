@@ -31,7 +31,7 @@ public class ExperiencePickup : MonoBehaviour
        
        private void Update()
        {
-              if (startedFollowing)
+              if (startedFollowing && GameCoordinator.Instance.gardenerInstance != null)
               {
                      transform.position = Vector3.MoveTowards(transform.position,
                             GameCoordinator.Instance.gardenerInstance.transform.position, followSpeed * Time.deltaTime);
