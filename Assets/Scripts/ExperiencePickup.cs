@@ -7,6 +7,7 @@ public class ExperiencePickup : MonoBehaviour
        public float followSpeed = 12;
        
        public SphereCollider followCollider;
+    public SphereCollider sphereCollider;
 
        public bool startedFollowing;
        
@@ -19,7 +20,7 @@ public class ExperiencePickup : MonoBehaviour
               if (!startedFollowing)
               {
                      startedFollowing = true;
-                     followCollider.radius = 0.5f;
+                    followCollider.gameObject.SetActive(false);
               }
               else
               {
@@ -32,7 +33,17 @@ public class ExperiencePickup : MonoBehaviour
               }      
        }
 
-       private void Update()
+    public void OnTriggerExit(Collider other)
+    {
+        if (other.tag != "Player")
+        {
+            return;
+        }
+
+
+    }
+
+    private void Update()
        {
               if (startedFollowing && GameCoordinator.Instance.gardenerInstance != null)
               {
