@@ -137,7 +137,7 @@ public class GardenerController : MonoBehaviour
         }
 
         // Swing
-        if (workaroundAttackCooldown && Input.GetKeyDown(KeyCode.Mouse0))
+        if (workaroundAttackCooldown && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0)))
         {
             rotateBack = false;
             m_axeAudioSource.clip = m_swooshSoundClip;

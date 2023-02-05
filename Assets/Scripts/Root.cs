@@ -326,7 +326,7 @@ public class Root : MonoBehaviour
     void Update()
     {
         // debug test :: only
-        if (Input.GetKeyDown(KeyCode.Space) && FullyGrown)
+        if ((Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.E)) && FullyGrown)
         {
             StartCoroutine(IncreaseWidthCoroutine());
             if (UnityEngine.Random.Range(0, 3) >= subRoots.Count)
