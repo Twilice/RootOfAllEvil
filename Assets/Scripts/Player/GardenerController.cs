@@ -106,7 +106,6 @@ public class GardenerController : MonoBehaviour
     public void AddExperience(int amount)
     {
         XP += amount;
-        Debug.Log("XP " + XP.ToString());
     }
     
     // Start is called before the first frame update

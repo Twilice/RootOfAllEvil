@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialRoots: 5
   initialOffshoots: 10
-  baseSpawnWeight: 3
+  baseSpawnWeight: 7
   spawnWeightPerSize: 0
   bonusSpawnWeightPerSecond: 11.7
   bonusSpawnWeightPerSpawn: -5

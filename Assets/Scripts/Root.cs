@@ -106,14 +106,8 @@ public class Root : MonoBehaviour
         consumeGrowth &= subRootSpawnPoints.Count > 0;
         consumeGrowth &= FullyGrown;
         
-        if (consumeGrowth)
-        {
-            CreateNewRoot(growAnimation);
-            return;
-        }
-
         var spawnFlower = UnityEngine.Random.value < 0.05f && TotalLength <= 5;
-        if (parentRoot != null && flowerInstance == null && spawnFlower)
+        if (FullyGrown && parentRoot != null && flowerInstance == null && spawnFlower)
         {
             flowerInstance = Instantiate(flower);
             flowerInstance.transform.parent = transform;
@@ -121,7 +115,15 @@ public class Root : MonoBehaviour
             float randRotation = UnityEngine.Random.Range(0f, 360f);
             flowerInstance.transform.rotation = Quaternion.Euler(0, randRotation, 0f);
         }
-        else if (subRoots.Count <= UnityEngine.Random.Range(0, maxBranches) == false)
+        
+        if (consumeGrowth)
+        {
+            CreateNewRoot(growAnimation);
+            return;
+        }
+
+        
+        if (subRoots.Count <= UnityEngine.Random.Range(0, maxBranches) == false)
         {
             var branchingRoot = subRoots[UnityEngine.Random.Range(0, subRoots.Count)];
             branchingRoot.Grow(TotalLength, growAnimation);
@@ -130,6 +132,10 @@ public class Root : MonoBehaviour
 
     public void CreateNewRoot(bool growAnimation)
     {
+        if (subRootSpawnPoints.Count == 0)
+        {
+            return;
+        }
         var spawnPoint = subRootSpawnPoints[UnityEngine.Random.Range(0, subRootSpawnPoints.Count)];
         subRootSpawnPoints.Remove(spawnPoint);
         var newRootRotation = transform.rotation * spawnPoint.localRotation * Quaternion.AngleAxis(UnityEngine.Random.Range(-spawnAngle, spawnAngle), Vector3.up);
