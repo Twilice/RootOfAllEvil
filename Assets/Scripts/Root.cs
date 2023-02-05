@@ -20,6 +20,7 @@ public class Root : MonoBehaviour
     public AnimationCurve growSpeedCurve;
     public float deathTime = 0.4f;
     public float maxBranches = 3;
+    public int extraHpPerChildRoot = 5;
 
     [Header("prefab object references")]
     public List<Transform> subRootSpawnPoints;
@@ -103,13 +104,16 @@ public class Root : MonoBehaviour
 
         consumeGrowth &= subRoots.Count <= UnityEngine.Random.Range(0, maxBranches);
         consumeGrowth &= subRootSpawnPoints.Count > 0;
-
+        consumeGrowth &= FullyGrown;
         
         if (consumeGrowth)
         {
             CreateNewRoot(growAnimation);
+            return;
         }
-        else if (parentRoot != null && flowerInstance == null && UnityEngine.Random.value < 0.05f)
+
+        var spawnFlower = UnityEngine.Random.value < 0.05f && TotalLength <= 5;
+        if (parentRoot != null && flowerInstance == null && spawnFlower)
         {
             flowerInstance = Instantiate(flower);
             flowerInstance.transform.parent = transform;
@@ -133,7 +137,7 @@ public class Root : MonoBehaviour
         newRoot.Setup(this, growAnimation);
         subRoots.Add(newRoot);
         // this makes no sense haha
-        HP = 2;
+        HP = extraHpPerChildRoot;
         StartCoroutine(IncreaseWidthCoroutine());
         if (parentRoot != null)
         {

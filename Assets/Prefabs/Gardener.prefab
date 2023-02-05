@@ -349,7 +349,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_moveSpeed: 10
-  m_maxRootStrengthWalkability: 4
+  m_maxRootStrengthWalkability: 10
   minMoveSpeed: 0.5
   m_body: {fileID: 6541710453254978746}
   m_sensitivity: 10
