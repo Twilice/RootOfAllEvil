@@ -7,6 +7,8 @@ public class GardenerController : MonoBehaviour
     // Publics
     [Header("Move")]
     public float m_moveSpeed = 10f;
+
+    public int m_maxRootStrengthWalkability = 20; 
     [Header("Turning")]
     public Transform m_body;
     public float m_sensitivity = 10f;
@@ -34,7 +36,8 @@ public class GardenerController : MonoBehaviour
 
     private Vector3 originalScreenPos;
 
-
+    private int slowDownFactor;
+    private float currentMoveSpeed;
     private int _hp = 100;
     public int HP
     {
@@ -66,6 +69,7 @@ public class GardenerController : MonoBehaviour
         m_axePivot.localEulerAngles = new Vector3(0f, -(m_rotationAngle / 2f), 0f);
         originalRotation = m_axePivot.rotation;
         m_audioSource.clip = m_swooshSoundClip;
+        currentMoveSpeed = m_moveSpeed;
     }
 
     // Update is called once per frame
@@ -78,7 +82,7 @@ public class GardenerController : MonoBehaviour
 
         runAnimator.SetBool("isRunning", (horizontal != 0 || vertical != 0));
 
-        transform.position = transform.position + new Vector3(horizontal, 0, vertical) * m_moveSpeed * Time.deltaTime;
+        transform.position = transform.position + new Vector3(horizontal, 0, vertical) * currentMoveSpeed * Time.deltaTime;
 
         //Rotation
         Vector3 mousePos = Input.mousePosition;
@@ -100,6 +104,18 @@ public class GardenerController : MonoBehaviour
             CheckForRoots();
             workaroundAttackCooldown = false;
         }
+        
+        // Movement through roots
+        Collider[] colliders = Physics.OverlapSphere(m_body.position, 1f);
+        int currentRootLengthTouched = 0;
+            foreach (var col in colliders)
+        {
+            if (col.tag == "Root")
+            {
+                currentRootLengthTouched += col.GetComponentInParent<Root>().TotalLength;
+            }
+        }
+        currentMoveSpeed = m_moveSpeed*(1-currentRootLengthTouched/m_maxRootStrengthWalkability);
     }
 
     IEnumerator SmoothRotate(float angle)
