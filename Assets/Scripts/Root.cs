@@ -149,9 +149,9 @@ public class Root : MonoBehaviour
     {
         startScale = body.localScale * UnityEngine.Random.Range(0.8f, 1.1f); 
         parentRoot = parent;
+        audioSource.clip = takingDamageClip;
         if (playGrowAnimation)
         {
-            audioSource.clip = takingDamageClip;
             timeUntilGrown = timeToGrowSeconds;
             InvokeRepeating(nameof(RefreshRotationMovement), 1f, 2f);
             StartCoroutine(StartGrowCoroutine());
@@ -230,12 +230,23 @@ public class Root : MonoBehaviour
         }
         Destroy(this.gameObject);
     }
+    private static float pitch = 1;
+    private static int frameLastPitchChange = 0;
     public void TakeDamage(int damage, Vector3 impactPoint)
     {
+        if (frameLastPitchChange != Time.frameCount)
+        {
+            frameLastPitchChange = Time.frameCount;
+            pitch = UnityEngine.Random.Range(0.96f, 1.05f);
+        }
+        audioSource.pitch = pitch;
         audioSource.Play();
-        impactPoint.y = hitEffect.transform.position.y;
-        hitEffect.transform.position = impactPoint;
-        hitEffect.Play();
+        if (hitEffect != null)
+        {
+            impactPoint.y = hitEffect.transform.position.y;
+            hitEffect.transform.position = impactPoint;
+            hitEffect.Play();
+        }
         HP = -damage;
         DisplaceRoots(damage);
     }
