@@ -362,6 +362,7 @@ MonoBehaviour:
   m_levelUpEffect: {fileID: 2486810940474216979}
   m_audioSource: {fileID: 3101706487190234884}
   m_swooshSoundClip: {fileID: 8300000, guid: a837000a7e8726647966ad7b8eadd7f4, type: 3}
+  m_gettingHit: {fileID: 8300000, guid: 8e6ccad2f85349c478d87099cbe22019, type: 3}
 --- !u!95 &3198320991885673415
 Animator:
   serializedVersion: 4

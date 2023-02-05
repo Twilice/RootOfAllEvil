@@ -28,6 +28,7 @@ public class GardenerController : MonoBehaviour
     [Header("Sounds")]
     public AudioSource m_audioSource;
     public AudioClip m_swooshSoundClip;
+    public AudioClip m_gettingHit;
 
     // Privates
     private Quaternion originalRotation;
@@ -82,7 +83,9 @@ public class GardenerController : MonoBehaviour
 
             if (_hp < oldHP)
             {
-                // OnDamgeTaken
+                m_audioSource.clip = m_gettingHit;
+                PlaySoundClip();
+                StartCoroutine(ScreenShake(0.2f, 0.3f));
             }
         }
     }
@@ -98,7 +101,7 @@ public class GardenerController : MonoBehaviour
     {
         m_axePivot.localEulerAngles = new Vector3(0f, -(m_rotationAngle / 2f), 0f);
         originalRotation = m_axePivot.rotation;
-        m_audioSource.clip = m_swooshSoundClip;
+        m_cameraTransform = Camera.main.transform;
     }
 
     // Update is called once per frame
@@ -124,6 +127,7 @@ public class GardenerController : MonoBehaviour
         if (workaroundAttackCooldown && Input.GetKeyDown(KeyCode.Mouse0))
         {
             rotateBack = false;
+            m_audioSource.clip = m_swooshSoundClip;
             PlaySoundClip();
             //StartCoroutine(SmoothRotate(m_rotationAngle));
             swingAnimator.SetTrigger("Swing");
