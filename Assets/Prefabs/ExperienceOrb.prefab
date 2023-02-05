@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 892ee6f20f6a4da791602e38c4415cde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  experienceAmount: 0
+  experienceAmount: 2
   followSpeed: 10
   followCollider: {fileID: 166206033096691380}
   startedFollowing: 0

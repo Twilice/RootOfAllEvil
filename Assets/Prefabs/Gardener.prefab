@@ -359,6 +359,7 @@ MonoBehaviour:
   runAnimator: {fileID: 2412698564422619420}
   swingAnimator: {fileID: 3198320991885673415}
   m_cameraTransform: {fileID: 1002370409}
+  m_levelUpEffect: {fileID: 2486810940474216979}
   m_audioSource: {fileID: 3101706487190234884}
   m_swooshSoundClip: {fileID: 8300000, guid: a837000a7e8726647966ad7b8eadd7f4, type: 3}
 --- !u!95 &3198320991885673415
@@ -610,6 +611,68 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1001 &5370040180146272475
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 6541710453254978746}
+    m_Modifications:
+    - target: {fileID: 1224814391630966261, guid: 3a061eb77ca4c5c45b190a13d25821b4, type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224814391630966261, guid: 3a061eb77ca4c5c45b190a13d25821b4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224814391630966261, guid: 3a061eb77ca4c5c45b190a13d25821b4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224814391630966261, guid: 3a061eb77ca4c5c45b190a13d25821b4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224814391630966261, guid: 3a061eb77ca4c5c45b190a13d25821b4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224814391630966261, guid: 3a061eb77ca4c5c45b190a13d25821b4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224814391630966261, guid: 3a061eb77ca4c5c45b190a13d25821b4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224814391630966261, guid: 3a061eb77ca4c5c45b190a13d25821b4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224814391630966261, guid: 3a061eb77ca4c5c45b190a13d25821b4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224814391630966261, guid: 3a061eb77ca4c5c45b190a13d25821b4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224814391630966261, guid: 3a061eb77ca4c5c45b190a13d25821b4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2776501522624240675, guid: 3a061eb77ca4c5c45b190a13d25821b4, type: 3}
+      propertyPath: m_Name
+      value: LevelUp
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3a061eb77ca4c5c45b190a13d25821b4, type: 3}
+--- !u!198 &2486810940474216979 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7495355684732807880, guid: 3a061eb77ca4c5c45b190a13d25821b4, type: 3}
+  m_PrefabInstance: {fileID: 5370040180146272475}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5441910628672628322
 PrefabInstance:
   m_ObjectHideFlags: 0

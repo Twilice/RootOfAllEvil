@@ -23,6 +23,7 @@ public class GardenerController : MonoBehaviour
 
     [Header("Effects")]
     public Transform m_cameraTransform;
+    public ParticleSystem m_levelUpEffect;
 
     [Header("Sounds")]
     public AudioSource m_audioSource;
@@ -34,6 +35,37 @@ public class GardenerController : MonoBehaviour
 
     private Vector3 originalScreenPos;
 
+    private int _xp = 0;
+    public int XP
+    {
+        get { return _xp; }
+        set 
+        { 
+            int oldXP = _xp;
+            _xp = value;
+            var nextLvl = Mathf.Pow(5f, (float)LVL);
+            if ((float)_xp >= nextLvl)
+            {
+                _xp -= (int)nextLvl;
+                LVL++;
+            }
+        }
+    }
+
+    private int _lvl = 1;
+    public int LVL
+    {
+        get { return _lvl; }
+        private set
+        {
+            int oldLVL = _lvl;
+            _lvl = value;
+            if (_lvl > oldLVL)
+            {
+                m_levelUpEffect.Play();
+            }
+        }
+    }
 
     private int _hp = 100;
     public int HP
@@ -57,7 +89,8 @@ public class GardenerController : MonoBehaviour
 
     public void AddExperience(int amount)
     {
-        
+        XP += amount;
+        Debug.Log("XP " + XP.ToString());
     }
     
     // Start is called before the first frame update
@@ -146,7 +179,6 @@ public class GardenerController : MonoBehaviour
                     root.TakeDamage(m_damage);
                     float duration = m_swingSpeed * 0.8f;
                     StartCoroutine(ScreenShake(duration, 0.15f));
-                    Debug.Log(root.HP.ToString()+" HP left!");
                 }
                 if (collider.gameObject.tag == "Flower")
                 {
