@@ -30,8 +30,11 @@ public class GardenerController : MonoBehaviour
     public ParticleSystem m_levelUpEffect;
 
     [Header("Sounds")]
-    public AudioSource m_audioSource;
+    public AudioSource m_axeAudioSource;
     public AudioClip m_swooshSoundClip;
+    public AudioSource m_bodyAudioScorce;
+    public AudioClip m_gettingHit;
+    public AudioClip m_levelUpClip;
 
     // Privates
     private Quaternion originalRotation;
@@ -67,6 +70,8 @@ public class GardenerController : MonoBehaviour
             _lvl = value;
             if (_lvl > oldLVL)
             {
+                m_bodyAudioScorce.clip = m_levelUpClip;
+                m_bodyAudioScorce.Play();
                 m_levelUpEffect.Play();
             }
         }
@@ -87,7 +92,9 @@ public class GardenerController : MonoBehaviour
 
             if (_hp < oldHP)
             {
-                // OnDamgeTaken
+                m_bodyAudioScorce.clip = m_gettingHit;
+                m_bodyAudioScorce.Play();
+                StartCoroutine(ScreenShake(0.2f, 0.3f));
             }
         }
     }
@@ -103,8 +110,8 @@ public class GardenerController : MonoBehaviour
     {
         m_axePivot.localEulerAngles = new Vector3(0f, -(m_rotationAngle / 2f), 0f);
         originalRotation = m_axePivot.rotation;
-        m_audioSource.clip = m_swooshSoundClip;
         currentMoveSpeed = m_moveSpeed;
+        m_cameraTransform = Camera.main.transform;
     }
 
     // Update is called once per frame
@@ -130,10 +137,14 @@ public class GardenerController : MonoBehaviour
         if (workaroundAttackCooldown && Input.GetKeyDown(KeyCode.Mouse0))
         {
             rotateBack = false;
-            PlaySoundClip();
+            m_axeAudioSource.clip = m_swooshSoundClip;
             //StartCoroutine(SmoothRotate(m_rotationAngle));
             swingAnimator.SetTrigger("Swing");
-            CheckForRoots();
+            CheckForRoots(out bool missedRoot);
+            if (missedRoot)
+            {
+                PlaySoundClip();
+            }
             workaroundAttackCooldown = false;
         }
         
@@ -186,8 +197,9 @@ public class GardenerController : MonoBehaviour
         }
     }
 
-    void CheckForRoots()
+    void CheckForRoots(out bool missedRoot)
     {
+        missedRoot = true;
         // Use Physics.OverlapSphere to check for colliders within the given collider
         Collider[] colliders = Physics.OverlapSphere(m_hitCollider.bounds.center, m_hitCollider.bounds.extents.magnitude);
 
@@ -198,6 +210,7 @@ public class GardenerController : MonoBehaviour
             {
                 if (collider.gameObject.tag == "Root")
                 {
+                    missedRoot = false;
                     var root = collider.GetComponentInParent<Root>();                    
                     root.TakeDamage(m_damage * LVL, collider.ClosestPoint(m_hitCollider.transform.position));
                     float duration = m_swingSpeed * 0.8f;
@@ -205,6 +218,7 @@ public class GardenerController : MonoBehaviour
                 }
                 else if (collider.gameObject.tag == "Flower")
                 {
+                    missedRoot = false;
                     var flower = collider.GetComponentInParent<Flower>();
                     flower.HP -= m_damage * LVL;
                 }
@@ -238,8 +252,16 @@ public class GardenerController : MonoBehaviour
         m_cameraTransform.localPosition = originalScreenPos;
     }
 
+    private static float pitch = 1;
+    private static int frameLastPitchChange = 0;
     public void PlaySoundClip()
     {
-        m_audioSource.Play();
+        if (frameLastPitchChange != Time.frameCount)
+        {
+            frameLastPitchChange = Time.frameCount;
+            pitch = UnityEngine.Random.Range(0.96f, 1.05f);
+        }
+        m_axeAudioSource.pitch = pitch;
+        m_axeAudioSource.Play();
     }
 }
