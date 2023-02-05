@@ -198,8 +198,8 @@ public class GardenerController : MonoBehaviour
             {
                 if (collider.gameObject.tag == "Root")
                 {
-                    var root = collider.GetComponentInParent<Root>();
-                    root.TakeDamage(m_damage * LVL);
+                    var root = collider.GetComponentInParent<Root>();                    
+                    root.TakeDamage(m_damage * LVL, collider.ClosestPoint(m_hitCollider.transform.position));
                     float duration = m_swingSpeed * 0.8f;
                     StartCoroutine(ScreenShake(duration, 0.15f));
                 }
