@@ -134,10 +134,13 @@ public class GardenerController : MonoBehaviour
         {
             rotateBack = false;
             m_audioSource.clip = m_swooshSoundClip;
-            PlaySoundClip();
             //StartCoroutine(SmoothRotate(m_rotationAngle));
             swingAnimator.SetTrigger("Swing");
-            CheckForRoots();
+            CheckForRoots(out bool missedRoot);
+            if (missedRoot)
+            {
+                PlaySoundClip();
+            }
             workaroundAttackCooldown = false;
         }
         
@@ -190,8 +193,9 @@ public class GardenerController : MonoBehaviour
         }
     }
 
-    void CheckForRoots()
+    void CheckForRoots(out bool missedRoot)
     {
+        missedRoot = true;
         // Use Physics.OverlapSphere to check for colliders within the given collider
         Collider[] colliders = Physics.OverlapSphere(m_hitCollider.bounds.center, m_hitCollider.bounds.extents.magnitude);
 
@@ -202,6 +206,7 @@ public class GardenerController : MonoBehaviour
             {
                 if (collider.gameObject.tag == "Root")
                 {
+                    missedRoot = false;
                     var root = collider.GetComponentInParent<Root>();                    
                     root.TakeDamage(m_damage * LVL, collider.ClosestPoint(m_hitCollider.transform.position));
                     float duration = m_swingSpeed * 0.8f;
@@ -209,6 +214,7 @@ public class GardenerController : MonoBehaviour
                 }
                 if (collider.gameObject.tag == "Flower")
                 {
+                    missedRoot = false;
                     var flower = collider.GetComponentInParent<Flower>();
                     flower.HP -= m_damage * LVL;
                 }
@@ -237,8 +243,16 @@ public class GardenerController : MonoBehaviour
         m_cameraTransform.localPosition = originalScreenPos;
     }
 
+    private static float pitch = 1;
+    private static int frameLastPitchChange = 0;
     public void PlaySoundClip()
     {
+        if (frameLastPitchChange != Time.frameCount)
+        {
+            frameLastPitchChange = Time.frameCount;
+            pitch = UnityEngine.Random.Range(0.96f, 1.05f);
+        }
+        m_audioSource.pitch = pitch;
         m_audioSource.Play();
     }
 }

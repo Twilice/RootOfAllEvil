@@ -173,7 +173,7 @@ ParticleSystem:
   serializedVersion: 8
   lengthInSec: 3
   simulationSpeed: 1
-  stopAction: 0
+  stopAction: 2
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
@@ -19998,6 +19998,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: eb9482eec1cca5341b26e9290c3710ff, type: 2}
     - target: {fileID: 7448557667485302303, guid: f387c30642cbe254ea589eb8da1577e2, type: 3}
+      propertyPath: stopAction
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7448557667485302303, guid: f387c30642cbe254ea589eb8da1577e2, type: 3}
       propertyPath: moveWithTransform
       value: 1
       objectReference: {fileID: 0}
@@ -20125,6 +20129,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6430944560853628916, guid: 99dcd1d8cc117034b984c1346791ce02, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8828202452430830957, guid: 99dcd1d8cc117034b984c1346791ce02, type: 3}
+      propertyPath: stopAction
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9140122480773408937, guid: 99dcd1d8cc117034b984c1346791ce02, type: 3}
