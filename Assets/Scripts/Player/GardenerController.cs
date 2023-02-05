@@ -27,7 +27,7 @@ public class GardenerController : MonoBehaviour
     public Animator swingAnimator;
 
     [Header("Effects")]
-    public Transform m_cameraTransform;
+    public CameraFollow m_followCamera;
     public ParticleSystem m_levelUpEffect;
 
     [Header("Sounds")]
@@ -98,7 +98,7 @@ public class GardenerController : MonoBehaviour
             {
                 m_bodyAudioScorce.clip = m_gettingHit;
                 m_bodyAudioScorce.Play();
-                StartCoroutine(ScreenShake(0.2f, 0.3f));
+                m_followCamera.ShakeCamera(0.2f, 0.3f);
             }
         }
     }
@@ -115,7 +115,7 @@ public class GardenerController : MonoBehaviour
         m_axePivot.localEulerAngles = new Vector3(0f, -(m_rotationAngle / 2f), 0f);
         originalRotation = m_axePivot.rotation;
         currentMoveSpeed = m_moveSpeed;
-        m_cameraTransform = Camera.main.transform;
+        m_followCamera = Camera.main.GetComponent<CameraFollow>();
     }
 
     // Update is called once per frame
@@ -222,7 +222,7 @@ public class GardenerController : MonoBehaviour
                     var root = collider.GetComponentInParent<Root>();    
                     root.TakeDamage(m_damage * LVL, collider.ClosestPoint(m_hitCollider.transform.position));
                     float duration = m_swingSpeed * 0.8f;
-                    StartCoroutine(ScreenShake(duration, 0.15f));
+                    m_followCamera.ShakeCamera(duration, 0.15f);
                 }
                 else if (collider.gameObject.tag == "Flower")
                 {
@@ -237,27 +237,6 @@ public class GardenerController : MonoBehaviour
                 }
             }
         }
-    }
-
-    public IEnumerator ScreenShake(float duration, float magnitude)
-    {
-        originalScreenPos = m_cameraTransform.localPosition;
-
-        float elapsed = 0.0f;
-
-        while (elapsed < duration)
-        {
-            float x = Random.Range(-1f, 1f) * magnitude;
-            float y = Random.Range(-1f, 1f) * magnitude;
-
-            m_cameraTransform.localPosition = new Vector3(originalScreenPos.x + x, originalScreenPos.y + y, originalScreenPos.z);
-
-            elapsed += Time.deltaTime;
-
-            yield return null;
-        }
-
-        m_cameraTransform.localPosition = originalScreenPos;
     }
 
     private static float pitch = 1;
