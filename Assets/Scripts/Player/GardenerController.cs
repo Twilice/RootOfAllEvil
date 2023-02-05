@@ -1,12 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GardenerController : MonoBehaviour
 {
     // Publics
     [Header("Move")]
     public float m_moveSpeed = 10f;
+    public int m_maxRootStrengthWalkability = 20;
+    public float minMoveSpeed = 3f;
     [Header("Turning")]
     public Transform m_body;
     public float m_sensitivity = 10f;
@@ -35,6 +39,7 @@ public class GardenerController : MonoBehaviour
 
     private Vector3 originalScreenPos;
 
+    private float currentMoveSpeed;
     private int _xp = 0;
     public int XP
     {
@@ -99,6 +104,7 @@ public class GardenerController : MonoBehaviour
         m_axePivot.localEulerAngles = new Vector3(0f, -(m_rotationAngle / 2f), 0f);
         originalRotation = m_axePivot.rotation;
         m_audioSource.clip = m_swooshSoundClip;
+        currentMoveSpeed = m_moveSpeed;
     }
 
     // Update is called once per frame
@@ -111,7 +117,7 @@ public class GardenerController : MonoBehaviour
 
         runAnimator.SetBool("isRunning", (horizontal != 0 || vertical != 0));
 
-        transform.position = transform.position + new Vector3(horizontal, 0, vertical) * m_moveSpeed * Time.deltaTime;
+        transform.position = transform.position + new Vector3(horizontal, 0, vertical) * currentMoveSpeed * Time.deltaTime;
 
         //Rotation
         Vector3 mousePos = Input.mousePosition;
@@ -130,6 +136,23 @@ public class GardenerController : MonoBehaviour
             CheckForRoots();
             workaroundAttackCooldown = false;
         }
+        
+        // Movement through roots
+        Collider[] colliders = Physics.OverlapSphere(m_body.position, 0.5f);
+        int currentRootLengthTouched = 0;
+        foreach (var col in colliders)
+        {
+            if (col.tag == "Root")
+            {
+                currentRootLengthTouched += col.GetComponentInParent<Root>().TotalLength;
+            }
+        }
+        currentMoveSpeed = MathF.Max(m_moveSpeed*(1-currentRootLengthTouched/(float)m_maxRootStrengthWalkability), minMoveSpeed);
+    }
+
+    public void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(m_body.position, 0.5f);
     }
 
     public void SetSwingCooldown()
