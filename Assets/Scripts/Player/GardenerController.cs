@@ -1,14 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GardenerController : MonoBehaviour
 {
     // Publics
     [Header("Move")]
     public float m_moveSpeed = 10f;
-
-    public int m_maxRootStrengthWalkability = 20; 
+    public int m_maxRootStrengthWalkability = 20;
+    public float minMoveSpeed = 3f;
     [Header("Turning")]
     public Transform m_body;
     public float m_sensitivity = 10f;
@@ -103,16 +105,21 @@ public class GardenerController : MonoBehaviour
         }
         
         // Movement through roots
-        Collider[] colliders = Physics.OverlapSphere(m_body.position, 1f);
+        Collider[] colliders = Physics.OverlapSphere(m_body.position, 0.5f);
         int currentRootLengthTouched = 0;
-            foreach (var col in colliders)
+        foreach (var col in colliders)
         {
             if (col.tag == "Root")
             {
                 currentRootLengthTouched += col.GetComponentInParent<Root>().TotalLength;
             }
         }
-        currentMoveSpeed = m_moveSpeed*(1-currentRootLengthTouched/m_maxRootStrengthWalkability);
+        currentMoveSpeed = MathF.Max(m_moveSpeed*(1-currentRootLengthTouched/(float)m_maxRootStrengthWalkability), minMoveSpeed);
+    }
+
+    public void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(m_body.position, 0.5f);
     }
 
     public void SetSwingCooldown()
