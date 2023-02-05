@@ -92,15 +92,12 @@ public class GardenerController : MonoBehaviour
 
 
         // Swing
-        if (m_axePivot.localRotation == originalRotation)
-        {
-            workaroundAttackCooldown = true;
-        }
         if (workaroundAttackCooldown && Input.GetKeyDown(KeyCode.Mouse0))
         {
             rotateBack = false;
             PlaySoundClip();
-            StartCoroutine(SmoothRotate(m_rotationAngle));
+            //StartCoroutine(SmoothRotate(m_rotationAngle));
+            swingAnimator.SetTrigger("Swing");
             CheckForRoots();
             workaroundAttackCooldown = false;
         }
@@ -116,6 +113,11 @@ public class GardenerController : MonoBehaviour
             }
         }
         currentMoveSpeed = m_moveSpeed*(1-currentRootLengthTouched/m_maxRootStrengthWalkability);
+    }
+
+    public void SetSwingCooldown()
+    {
+        workaroundAttackCooldown = true;
     }
 
     IEnumerator SmoothRotate(float angle)
