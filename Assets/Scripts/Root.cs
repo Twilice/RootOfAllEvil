@@ -111,6 +111,7 @@ public class Root : MonoBehaviour
         else if (parentRoot != null && flowerInstance == null && UnityEngine.Random.value < 0.05f)
         {
             flowerInstance = Instantiate(flower);
+            flowerInstance.transform.parent = transform;
             flowerInstance.transform.position = transform.position;
             float randRotation = UnityEngine.Random.Range(0f, 360f);
             flowerInstance.transform.rotation = Quaternion.Euler(0, randRotation, 0f);
