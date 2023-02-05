@@ -822,6 +822,10 @@ MonoBehaviour:
   spread: 360
   speed: 6
   duration: 10
+  startHp: 3
+  dieTimer: 1.5
+  shakeMagnitude: 15
+  watchPlayer: {fileID: 7201431146605456352}
 --- !u!1001 &281302743555694185
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -988,6 +992,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxRotationZ: 50
   maxRotationX: 40
+  intervalBetweenEyeDarts: 0.2
+  eyeDartSpeed: 810
 --- !u!4 &7327530913177297901 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d5d1288ccd9c10d458bd71111ecf7ac3, type: 3}

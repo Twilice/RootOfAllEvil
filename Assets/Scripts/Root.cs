@@ -201,11 +201,7 @@ public class Root : MonoBehaviour
         }
         
         transform.SetParent(GameCoordinator.Instance.transform);
-        if (onDeadParticleSystem != null)
-        {
-            onDeadParticleSystem.transform.parent = null;
-            onDeadParticleSystem.SetActive(true);
-        }
+
         StartCoroutine(Die(deathTime * depth));
     }
 
@@ -223,10 +219,16 @@ public class Root : MonoBehaviour
             particleSystem.parent = null;
             particleSystem.GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
-
+        
+        if (onDeadParticleSystem != null)
+        {
+            onDeadParticleSystem.transform.parent = null;
+            onDeadParticleSystem.SetActive(true);
+        }
+        
         if (flowerInstance != null)
         {
-            Destroy(flowerInstance.gameObject);
+            flowerInstance.Die();
         }
         Destroy(this.gameObject);
     }
