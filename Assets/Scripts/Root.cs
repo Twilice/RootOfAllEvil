@@ -197,8 +197,11 @@ public class Root : MonoBehaviour
         }
         
         transform.SetParent(GameCoordinator.Instance.transform);
-        onDeadParticleSystem.transform.parent = null;
-        onDeadParticleSystem.SetActive(true);
+        if (onDeadParticleSystem != null)
+        {
+            onDeadParticleSystem.transform.parent = null;
+            onDeadParticleSystem.SetActive(true);
+        }
         StartCoroutine(Die(deathTime * depth));
     }
 
