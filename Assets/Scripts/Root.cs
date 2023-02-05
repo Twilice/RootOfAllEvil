@@ -201,8 +201,11 @@ public class Root : MonoBehaviour
         }
         
         transform.SetParent(GameCoordinator.Instance.transform);
-        onDeadParticleSystem.transform.parent = null;
-        onDeadParticleSystem.SetActive(true);
+        if (onDeadParticleSystem != null)
+        {
+            onDeadParticleSystem.transform.parent = null;
+            onDeadParticleSystem.SetActive(true);
+        }
         StartCoroutine(Die(deathTime * depth));
     }
 
@@ -227,9 +230,11 @@ public class Root : MonoBehaviour
         }
         Destroy(this.gameObject);
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, Vector3 impactPoint)
     {
         audioSource.Play();
+        impactPoint.y = hitEffect.transform.position.y;
+        hitEffect.transform.position = impactPoint;
         hitEffect.Play();
         HP = -damage;
         DisplaceRoots(damage);

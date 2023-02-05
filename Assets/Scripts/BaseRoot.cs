@@ -38,7 +38,7 @@ public class BaseRoot : MonoBehaviour
     // runtime game object references
     [Header("runtime object references")]
     public List<Root> roots = new List<Root>();
-
+    private int amountStartRoots;
     void Awake()
     {
         if (Root.baseRoot != null)
@@ -75,9 +75,16 @@ public class BaseRoot : MonoBehaviour
 
     public void Branch(bool growAnimation)
     {
-        currentBonusSpawnWeight += bonusSpawnWeightPerSpawn;
-        var branchingRoot = roots[UnityEngine.Random.Range(0, roots.Count)];
-        branchingRoot.Grow(TotalLength, growAnimation);
+        if (roots.Count < initialRoots)
+        {
+            CreateInitialRoot(UnityEngine.Random.Range(0, 360));
+        }
+        else
+        {
+            currentBonusSpawnWeight += bonusSpawnWeightPerSpawn;
+            var branchingRoot = roots[UnityEngine.Random.Range(0, roots.Count)];
+            branchingRoot.Grow(TotalLength, growAnimation);
+        }
     }
 
     public void CreateInitialRoots()
@@ -88,7 +95,7 @@ public class BaseRoot : MonoBehaviour
             CreateInitialRoot(angle + UnityEngine.Random.Range(-20,20));
             angle += 360 / initialRoots;
         }
-
+        
         for (int i = 0; i < initialOffshoots; i++)
         {
             Branch(false);
