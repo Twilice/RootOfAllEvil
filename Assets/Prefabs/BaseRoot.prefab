@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -2911909729538315235}
   m_Layer: 0
   m_Name: BaseRoot
-  m_TagString: Untagged
+  m_TagString: BaseRoot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47,11 +47,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialRoots: 5
+  initialOffshoots: 10
   baseSpawnWeight: 3
   spawnWeightPerSize: 0
   bonusSpawnWeightPerSecond: 11.7
   bonusSpawnWeightPerSpawn: -5
   maxSpawnWeightRoll: 100
+  shakeMagnitude: 25
+  watchPlayer: {fileID: 5718354258401818871}
   currentBonusSpawnWeight: 0
   DEBUG_currentSpawnWeight: 0
   roots: []
@@ -67,7 +70,7 @@ GameObject:
   - component: {fileID: 1960868835747830431}
   m_Layer: 0
   m_Name: Collider
-  m_TagString: Untagged
+  m_TagString: BaseRoot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -98,7 +101,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 1.35
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7936259358800304998
 GameObject:
@@ -291,6 +294,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxRotationZ: 50
   maxRotationX: 40
+  intervalBetweenEyeDarts: 0.2
+  eyeDartSpeed: 810
 --- !u!4 &7090462265962781299 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d5d1288ccd9c10d458bd71111ecf7ac3, type: 3}

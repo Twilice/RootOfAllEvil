@@ -30,9 +30,11 @@ public class GardenerController : MonoBehaviour
     public ParticleSystem m_levelUpEffect;
 
     [Header("Sounds")]
-    public AudioSource m_audioSource;
+    public AudioSource m_axeAudioSource;
     public AudioClip m_swooshSoundClip;
+    public AudioSource m_bodyAudioScorce;
     public AudioClip m_gettingHit;
+    public AudioClip m_levelUpClip;
 
     // Privates
     private Quaternion originalRotation;
@@ -68,6 +70,8 @@ public class GardenerController : MonoBehaviour
             _lvl = value;
             if (_lvl > oldLVL)
             {
+                m_bodyAudioScorce.clip = m_levelUpClip;
+                m_bodyAudioScorce.Play();
                 m_levelUpEffect.Play();
             }
         }
@@ -88,8 +92,8 @@ public class GardenerController : MonoBehaviour
 
             if (_hp < oldHP)
             {
-                m_audioSource.clip = m_gettingHit;
-                PlaySoundClip();
+                m_bodyAudioScorce.clip = m_gettingHit;
+                m_bodyAudioScorce.Play();
                 StartCoroutine(ScreenShake(0.2f, 0.3f));
             }
         }
@@ -133,7 +137,7 @@ public class GardenerController : MonoBehaviour
         if (workaroundAttackCooldown && Input.GetKeyDown(KeyCode.Mouse0))
         {
             rotateBack = false;
-            m_audioSource.clip = m_swooshSoundClip;
+            m_axeAudioSource.clip = m_swooshSoundClip;
             //StartCoroutine(SmoothRotate(m_rotationAngle));
             swingAnimator.SetTrigger("Swing");
             CheckForRoots(out bool missedRoot);
@@ -212,11 +216,16 @@ public class GardenerController : MonoBehaviour
                     float duration = m_swingSpeed * 0.8f;
                     StartCoroutine(ScreenShake(duration, 0.15f));
                 }
-                if (collider.gameObject.tag == "Flower")
+                else if (collider.gameObject.tag == "Flower")
                 {
                     missedRoot = false;
                     var flower = collider.GetComponentInParent<Flower>();
                     flower.HP -= m_damage * LVL;
+                }
+                else if(collider.gameObject.tag == "BaseRoot")
+                {
+                    var baseRoot = collider.GetComponentInParent<BaseRoot>();
+                    baseRoot.TakeDamage();
                 }
             }
         }
@@ -252,7 +261,7 @@ public class GardenerController : MonoBehaviour
             frameLastPitchChange = Time.frameCount;
             pitch = UnityEngine.Random.Range(0.96f, 1.05f);
         }
-        m_audioSource.pitch = pitch;
-        m_audioSource.Play();
+        m_axeAudioSource.pitch = pitch;
+        m_axeAudioSource.Play();
     }
 }

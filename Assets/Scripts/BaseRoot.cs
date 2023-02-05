@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class BaseRoot : MonoBehaviour
 {
@@ -21,7 +22,11 @@ public class BaseRoot : MonoBehaviour
     // if random roll is higher than weight, spawn branch
     public float maxSpawnWeightRoll = 100;
 
-    [Header("prefab object references")]
+    [Header("Visual variables")] 
+    public float shakeMagnitude = 25;
+    
+    [Header("prefab object references")] 
+    public WatchPlayer watchPlayer;
 
     [Header("game states")]
     public float currentBonusSpawnWeight;
@@ -39,6 +44,9 @@ public class BaseRoot : MonoBehaviour
     [Header("runtime object references")]
     public List<Root> roots = new List<Root>();
     private int amountStartRoots;
+
+    private float shakeTimer;
+    
     void Awake()
     {
         if (Root.baseRoot != null)
@@ -107,5 +115,37 @@ public class BaseRoot : MonoBehaviour
         var newRoot = Instantiate(Assets.rootPrefab, transform.position, Quaternion.AngleAxis(angle, Vector3.up));
         newRoot.Setup(null, false);
         roots.Add(newRoot);
+    }
+
+    public void TakeDamage()
+    {
+        watchPlayer.DartEyes(0.5f);
+        if (shakeTimer <= 0)
+        {
+            shakeTimer = 0.5f;
+            StartCoroutine(Shake());
+        }
+        else
+        {
+            shakeTimer = 0.5f;
+        }
+    }
+    
+    private IEnumerator Shake()
+    {
+        var originalPosition = transform.localPosition;
+        
+        var shakeX = Random.Range(-1f, 1f);
+        var shakeZ = Random.Range(-1f, 1f);
+        while (shakeTimer >= 0)
+        {
+            shakeX = Random.Range(-1f, 1f);
+            shakeZ = Random.Range(-1f, 1f);
+            transform.localPosition = originalPosition + new Vector3(shakeX, 0, shakeZ) * shakeMagnitude * Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+            shakeTimer -= Time.deltaTime;
+        }
+
+        transform.localPosition = originalPosition;
     }
 }

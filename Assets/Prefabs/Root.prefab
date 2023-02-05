@@ -125,7 +125,7 @@ MonoBehaviour:
   onDeadParticleSystem: {fileID: 5362829245553680766}
   IsCutOff: 0
   audioSource: {fileID: 3010638718760570689}
-  takingDamageClip: {fileID: 8300000, guid: c16ed28efa6df314bb59e98fbeb930ff, type: 3}
+  takingDamageClip: {fileID: 8300000, guid: 7167d43759bfc8741821bb71f38e5dcb, type: 3}
   hitEffect: {fileID: 2128217797993466177}
   parentRoot: {fileID: 0}
   subRoots: []
