@@ -96,8 +96,8 @@ public class GardenerController : MonoBehaviour
 
             if (_hp < oldHP)
             {
-                m_bodyAudioScorce.clip = m_gettingHit;
-                m_bodyAudioScorce.Play();
+                //m_bodyAudioScorce.clip = m_gettingHit;
+                //m_bodyAudioScorce.Play();
                 m_followCamera.ShakeCamera(0.2f, 0.3f);
             }
         }
