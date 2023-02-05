@@ -297,9 +297,9 @@ MonoBehaviour:
   intervalBetweenEyeDarts: 0.2
   eyeDartSpeed: 810
   spore: {fileID: 1665068882250651788, guid: 4650d57eb5d2b294eb66b0e4387adfed, type: 3}
-  interval: 1
-  speed: 10
-  duration: 2
+  interval: 3
+  speed: 5
+  duration: 10
 --- !u!4 &7090462265962781299 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d5d1288ccd9c10d458bd71111ecf7ac3, type: 3}
