@@ -159,7 +159,11 @@ public class GardenerController : MonoBehaviour
         {
             if (col.tag == "Root")
             {
-                currentRootLengthTouched += col.GetComponentInParent<Root>().TotalLength;
+                var root = col.GetComponentInParent<Root>();
+                if (root != null)
+                {
+                    currentRootLengthTouched += col.GetComponentInParent<Root>().TotalLength;
+                }
             }
         }
         currentMoveSpeed = MathF.Max(m_moveSpeed*(1-currentRootLengthTouched/(float)m_maxRootStrengthWalkability), minMoveSpeed);
@@ -215,7 +219,7 @@ public class GardenerController : MonoBehaviour
                 if (collider.gameObject.tag == "Root")
                 {
                     missedRoot = false;
-                    var root = collider.GetComponentInParent<Root>();                    
+                    var root = collider.GetComponentInParent<Root>();    
                     root.TakeDamage(m_damage * LVL, collider.ClosestPoint(m_hitCollider.transform.position));
                     float duration = m_swingSpeed * 0.8f;
                     StartCoroutine(ScreenShake(duration, 0.15f));
