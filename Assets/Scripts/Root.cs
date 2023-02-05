@@ -26,6 +26,7 @@ public class Root : MonoBehaviour
     public Transform body;
     public Renderer meshRenderer;
     public List<Transform> particlesToMakeStandaloneOnDestroy;
+    public GameObject onDeadParticleSystem;
 
     [Header("game states")]
     public bool IsCutOff;
@@ -111,11 +112,12 @@ public class Root : MonoBehaviour
         else if (parentRoot != null && flowerInstance == null && UnityEngine.Random.value < 0.05f)
         {
             flowerInstance = Instantiate(flower);
+            flowerInstance.transform.parent = transform;
             flowerInstance.transform.position = transform.position;
             float randRotation = UnityEngine.Random.Range(0f, 360f);
             flowerInstance.transform.rotation = Quaternion.Euler(0, randRotation, 0f);
         }
-        else
+        else if (subRoots.Count <= UnityEngine.Random.Range(0, maxBranches) == false)
         {
             var branchingRoot = subRoots[UnityEngine.Random.Range(0, subRoots.Count)];
             branchingRoot.Grow(TotalLength, growAnimation);
@@ -195,6 +197,8 @@ public class Root : MonoBehaviour
         }
         
         transform.SetParent(GameCoordinator.Instance.transform);
+        onDeadParticleSystem.transform.parent = null;
+        onDeadParticleSystem.SetActive(true);
         StartCoroutine(Die(deathTime * depth));
     }
 
