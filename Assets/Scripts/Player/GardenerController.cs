@@ -125,13 +125,13 @@ public class GardenerController : MonoBehaviour
         runAnimator.SetBool("isRunning", (horizontal != 0 || vertical != 0));
 
         transform.position = transform.position + new Vector3(horizontal, 0, vertical) * currentMoveSpeed * Time.deltaTime;
-
-        //Rotation
-        Vector3 mousePos = Input.mousePosition;
-        Vector3 screenPoint = Camera.main.ScreenToViewportPoint(mousePos);
-        Quaternion targetRotation = Quaternion.LookRotation(new Vector3(screenPoint.x - 0.5f, 0f, screenPoint.y - 0.5f));
-        m_body.rotation = Quaternion.Slerp(m_body.rotation, targetRotation, m_sensitivity * Time.deltaTime);
-
+        
+        var moveDir = new Vector3(horizontal, 0, vertical);
+        if (moveDir.sqrMagnitude > 0.1)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(new Vector3(moveDir.x, 0f, moveDir.z));
+            m_body.rotation = Quaternion.Slerp(m_body.rotation, targetRotation, m_sensitivity * Time.deltaTime);
+        }
 
         // Swing
         if (workaroundAttackCooldown && Input.GetKeyDown(KeyCode.Mouse0))
