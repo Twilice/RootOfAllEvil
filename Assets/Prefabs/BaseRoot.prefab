@@ -296,6 +296,7 @@ MonoBehaviour:
   maxRotationX: 40
   intervalBetweenEyeDarts: 0.2
   eyeDartSpeed: 810
+  projectileOn: 1
   spore: {fileID: 1665068882250651788, guid: 4650d57eb5d2b294eb66b0e4387adfed, type: 3}
   interval: 3
   speed: 5

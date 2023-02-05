@@ -12,6 +12,7 @@ public class WatchPlayer : MonoBehaviour
     public float eyeDartSpeed = 5;
 
     [Header("Projectile")]
+    public bool projectileOn = false;
     public PollenProjectile spore;
     public float interval = 1.0f;
     public float speed = 10.0f;
@@ -57,14 +58,18 @@ public class WatchPlayer : MonoBehaviour
         float angleBetweenEyeAndPlayer = Mathf.Atan2(loc.z - ploc.z, loc.x - ploc.x);
         transform.rotation = AngleToEdge(angleBetweenEyeAndPlayer);
 
-        timer -= Time.deltaTime;
-        if (timer <= 0)
+        if (projectileOn)
         {
-            timer = interval;
-            //float angle = angleBetweenEyeAndPlayer;
-            Vector3 direction = AngleToEdge(angleBetweenEyeAndPlayer) * transform.up;
-            var projectile = Instantiate(spore);
-            projectile.SetUp(transform.position, direction, speed, duration);
+            timer -= Time.deltaTime;
+            if (timer <= 0)
+            {
+                timer = interval;
+                //float angle = angleBetweenEyeAndPlayer;
+                Vector3 direction = AngleToEdge(angleBetweenEyeAndPlayer) * transform.up;
+                direction.y = 0;
+                var projectile = Instantiate(spore);
+                projectile.SetUp(transform.position, direction, speed, duration);
+            }
         }
     }
 
