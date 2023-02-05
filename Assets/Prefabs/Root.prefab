@@ -82,7 +82,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizeScaleMultiplier: 0.2
   spawnAngle: 20
-  timeToGrowSeconds: 0.3
+  timeToGrowSeconds: 2
   growSpeedCurve:
     serializedVersion: 2
     m_Curve:
@@ -109,6 +109,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   deathTime: 0.4
   maxBranches: 3
+  extraHpPerChildRoot: 5
   subRootSpawnPoints:
   - {fileID: 5064505048729759640}
   - {fileID: 738687526285606646}
@@ -20073,6 +20074,18 @@ PrefabInstance:
     - target: {fileID: 6430944560853628916, guid: 99dcd1d8cc117034b984c1346791ce02, type: 3}
       propertyPath: m_RootOrder
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6430944560853628916, guid: 99dcd1d8cc117034b984c1346791ce02, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6430944560853628916, guid: 99dcd1d8cc117034b984c1346791ce02, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6430944560853628916, guid: 99dcd1d8cc117034b984c1346791ce02, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6430944560853628916, guid: 99dcd1d8cc117034b984c1346791ce02, type: 3}
       propertyPath: m_LocalPosition.x
