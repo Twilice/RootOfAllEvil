@@ -218,8 +218,12 @@ public class Root : MonoBehaviour
         {
             particleSystem.parent = null;
             particleSystem.GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
+            Destroy(particleSystem.gameObject, 5f);
         }
-        
+
+        audioSource.transform.parent = null;
+        Destroy(audioSource.transform.gameObject, 5f);
+
         if (onDeadParticleSystem != null)
         {
             onDeadParticleSystem.transform.parent = null;
@@ -239,7 +243,7 @@ public class Root : MonoBehaviour
         if (frameLastPitchChange != Time.frameCount)
         {
             frameLastPitchChange = Time.frameCount;
-            pitch = UnityEngine.Random.Range(0.96f, 1.05f);
+            pitch = UnityEngine.Random.Range(0.95f, 1.08f);
         }
         audioSource.pitch = pitch;
         audioSource.Play();
