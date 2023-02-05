@@ -349,7 +349,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_moveSpeed: 10
-  m_maxRootStrengthWalkability: 10
+  m_maxRootStrengthWalkability: 20
   minMoveSpeed: 0.5
   m_body: {fileID: 6541710453254978746}
   m_sensitivity: 10
@@ -357,6 +357,7 @@ MonoBehaviour:
   m_rotationAngle: 90
   m_axePivot: {fileID: 7382885624325741364}
   m_hitCollider: {fileID: 1521739658}
+  m_axeMesh: {fileID: 5087376374127515040}
   m_damage: 3
   runAnimator: {fileID: 2412698564422619420}
   swingAnimator: {fileID: 3198320991885673415}
@@ -463,6 +464,14 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: f222bec2b27fbf442bd4be9d21e76c09, type: 3}
       propertyPath: m_LocalScale.x
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f222bec2b27fbf442bd4be9d21e76c09, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f222bec2b27fbf442bd4be9d21e76c09, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f222bec2b27fbf442bd4be9d21e76c09, type: 3}
       propertyPath: m_LocalPosition.x

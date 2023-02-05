@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Root
   - Flower
+  - BaseRoot
   layers:
   - Default
   - TransparentFX
